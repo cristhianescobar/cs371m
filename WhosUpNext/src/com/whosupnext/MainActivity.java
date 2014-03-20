@@ -2,7 +2,9 @@ package com.whosupnext;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 
 public class MainActivity extends Activity {
 
@@ -19,12 +21,14 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	public void listEvents(Bundle bundle) {
+	public void listEvents(View v) {
+		
 		
 	}
 	
-	public void addEvent(Bundle bundle) {
-		
+	public void addEvent(View v) {
+		Intent intent = new Intent(this, AddEvent.class);
+		startActivity(intent);
 	}
 
 }
