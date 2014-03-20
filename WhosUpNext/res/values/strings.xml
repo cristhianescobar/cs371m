@@ -3,6 +3,8 @@
 
     <string name="app_name">Who\'s Up Next?</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+	
+    <string name="list_events">List Events</string>
+    <string name="add_event">Add Event</string>
 
 </resources>
