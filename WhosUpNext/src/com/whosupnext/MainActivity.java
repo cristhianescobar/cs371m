@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.View;
 
 import com.parse.Parse;
-import com.parse.ParseObject;
 
 
 public class MainActivity extends Activity {
@@ -17,6 +16,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+        //Application ID AaxBmFVakIxhS7XajgFg8CveAlMxyX5zifrU00If
+        //Client Key N9lPXcTEmixoJOkVNpxKb6CRpNoNkqP8LUetMvFv
         Parse.initialize(this, "AaxBmFVakIxhS7XajgFg8CveAlMxyX5zifrU00If", "N9lPXcTEmixoJOkVNpxKb6CRpNoNkqP8LUetMvFv");
 
 

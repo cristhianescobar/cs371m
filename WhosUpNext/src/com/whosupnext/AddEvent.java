@@ -17,6 +17,7 @@ import com.parse.ParseObject;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 
 public class AddEvent extends Activity {
@@ -28,6 +29,7 @@ public class AddEvent extends Activity {
     EditText mPhoneNumber;
     EditText mLocation;
     EditText mDetails;
+    Map<String, String> mEventMap;
 
 
 
@@ -41,21 +43,35 @@ public class AddEvent extends Activity {
         mPhoneNumber = (EditText) findViewById(R.id.Phone) ;
         mLocation = (EditText) findViewById(R.id.Location);
         mDetails = (EditText) findViewById(R.id.Details);
+
 	}
 	
 	public void showDatePickerDialog(View v) {
 	    DialogFragment newFragment = new DatePickerFragment();
 	    newFragment.show(getFragmentManager(), "datePicker");
-
-
-
 	}
 
     public void generateEvent(View v){
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+        ParseObject event = new ParseObject("Event");
+//        mEventMap = new HashMap<String, String>();
+//        mEventMap.put("Name", mEventName.toString());
+//        mEventMap.put("Date",mDate.toString());
+//        mEventMap.put("Phone", mPhoneNumber.toString());
+//        mEventMap.put("Location", mLocation.toString());
+//        mEventMap.put("Details", mDetails.toString());
+
+        event.put("Name", mEventName.getText().toString());
+        event.put("Date",mDate.toString());
+        event.put("Phone", mPhoneNumber.getText().toString());
+        event.put("Location", mLocation.getText().toString());
+        event.put("Details", mDetails.getText().toString());
+
+
+        //DrewMenu?
+
+        event.saveInBackground();
+
     }
 	
 	public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
