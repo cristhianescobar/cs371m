@@ -13,7 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.parse.Parse;
+import com.parse.ParseObject;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -47,9 +47,16 @@ public class AddEvent extends Activity {
 	    DialogFragment newFragment = new DatePickerFragment();
 	    newFragment.show(getFragmentManager(), "datePicker");
 
-        Parse.initialize(this, "AaxBmFVakIxhS7XajgFg8CveAlMxyX5zifrU00If", "N9lPXcTEmixoJOkVNpxKb6CRpNoNkqP8LUetMvFv");
+
 
 	}
+
+    public void generateEvent(View v){
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+    }
 	
 	public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 		@Override
