@@ -11,6 +11,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -21,9 +22,7 @@ public class AddEvent extends Activity {
 	
 	String mName = "New Event";
 	static Date mDate = new Date();
-	
-	
-	
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,7 @@ public class AddEvent extends Activity {
 	    newFragment.show(getFragmentManager(), "datePicker");
 	}
 	
-	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+	public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			// Use the current date as the default date in the picker
@@ -53,6 +52,9 @@ public class AddEvent extends Activity {
 			mDate.setYear(year);
 			mDate.setMonth(month);
 			mDate.setDate(day);
+
+            Button time = (Button) findViewById(R.id.Date);
+            time.setText( month + "/" + day +  "/" + year);
 		}
 	}
 	
@@ -61,7 +63,7 @@ public class AddEvent extends Activity {
 	    newFragment.show(getFragmentManager(), "timePicker");
 	}
 	
-	public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+	public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			// Use the current time as the default values for the picker
@@ -77,6 +79,9 @@ public class AddEvent extends Activity {
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 			mDate.setHours(hourOfDay);
 			mDate.setMinutes(minute);
+
+            Button time = (Button) findViewById(R.id.Time);
+            time.setText(mDate.getHours() + ":" +mDate.getMinutes());
 		}
 	}
 }

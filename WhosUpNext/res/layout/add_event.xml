@@ -22,17 +22,46 @@
 	    android:hint="Event Name"
 	    android:inputType="textPersonName"
 	    android:layout_width="fill_parent" />
-    
-    <Button 
-	    android:layout_width="wrap_content" 
+
+    <Button
+        android:id="@+id/Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:onClick="showDatePickerDialog" />
+
+    <Button
+        android:id="@+id/Time"
+	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="Pick Time" 
+	    android:text="Time"
 	    android:onClick="showTimePickerDialog" />
+
+
+    <EditText
+        android:id="@+id/Phone"
+        android:layout_height="wrap_content"
+        android:hint="Phone Number"
+        android:inputType="phone"
+        android:layout_width="fill_parent" />
+
+    <EditText
+        android:id="@+id/Details"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:hint="Event Details"
+        android:layout_height="wrap_content"
+        android:inputType="textAutoCorrect" />
+
+    <Button
+        android:id="@+id/Submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Event"
+        />
+
+
     
-    <Button 
-	    android:layout_width="wrap_content" 
-	    android:layout_height="wrap_content"
-	    android:text="Pick Date" 
-	    android:onClick="showDatePickerDialog" />
+
 
 </LinearLayout>
