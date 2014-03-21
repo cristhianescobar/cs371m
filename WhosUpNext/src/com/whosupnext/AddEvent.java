@@ -1,8 +1,5 @@
 package com.whosupnext;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -13,26 +10,45 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.parse.Parse;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class AddEvent extends Activity {
 	
 	
-	String mName = "New Event";
-	static Date mDate = new Date();
 
-	
+	static Date mDate = new Date();
+    EditText mEventName;
+    EditText mPhoneNumber;
+    EditText mLocation;
+    EditText mDetails;
+
+
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_event);
+
+        mEventName = (EditText) findViewById(R.id.EventName);
+        mPhoneNumber = (EditText) findViewById(R.id.Phone) ;
+        mLocation = (EditText) findViewById(R.id.Location);
+        mDetails = (EditText) findViewById(R.id.Details);
 	}
 	
 	public void showDatePickerDialog(View v) {
 	    DialogFragment newFragment = new DatePickerFragment();
 	    newFragment.show(getFragmentManager(), "datePicker");
+
+        Parse.initialize(this, "AaxBmFVakIxhS7XajgFg8CveAlMxyX5zifrU00If", "N9lPXcTEmixoJOkVNpxKb6CRpNoNkqP8LUetMvFv");
+
 	}
 	
 	public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
