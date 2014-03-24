@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public void listEvents(View v) {
-		Intent intent = new Intent(this, ListEvents.class);
+        Intent intent = new Intent(this, ListEvents.class);
         startActivity(intent);
 		
 	}
