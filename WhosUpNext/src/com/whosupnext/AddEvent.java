@@ -13,31 +13,27 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.parse.ParseObject;
-
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
 
 public class AddEvent extends Activity {
-	
-	
-
-	static Date mDate = new Date();
-    EditText mEventName;
-    EditText mPhoneNumber;
-    EditText mLocation;
-    EditText mDetails;
-    Map<String, String> mEventMap;
 
 
+    private static final String EVENTS_TABLE = "CreateEvent";
+    private static Date mDate = new Date();
+    private EditText mEventName;
+    private EditText mPhoneNumber;
+    private EditText mLocation;
+    private EditText mDetails;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_event);
+
+        mDate = new Date();
 
         mEventName = (EditText) findViewById(R.id.EventName);
         mPhoneNumber = (EditText) findViewById(R.id.Phone) ;
@@ -53,24 +49,14 @@ public class AddEvent extends Activity {
 
     public void generateEvent(View v){
 
-        ParseObject event = new ParseObject("Event");
-//        mEventMap = new HashMap<String, String>();
-//        mEventMap.put("Name", mEventName.toString());
-//        mEventMap.put("Date",mDate.toString());
-//        mEventMap.put("Phone", mPhoneNumber.toString());
-//        mEventMap.put("Location", mLocation.toString());
-//        mEventMap.put("Details", mDetails.toString());
+        Json request = new Json(EVENTS_TABLE);
+        request.setName(mEventName.getText().toString());
+        request.setDate(mDate.toString());
+        request.setPhoneNumber(mPhoneNumber.getText().toString());
+        request.setLocation(mLocation.getText().toString());
+        request.setDetails(mDetails.getText().toString());
+        request.send();
 
-        event.put("Name", mEventName.getText().toString());
-        event.put("Date",mDate.toString());
-        event.put("Phone", mPhoneNumber.getText().toString());
-        event.put("Location", mLocation.getText().toString());
-        event.put("Details", mDetails.getText().toString());
-
-
-        //DrewMenu?
-
-        event.saveInBackground();
 
     }
 	
@@ -88,14 +74,48 @@ public class AddEvent extends Activity {
 		}
 
 		public void onDateSet(DatePicker view, int year, int month, int day) {
+
 			mDate.setYear(year);
 			mDate.setMonth(month);
 			mDate.setDate(day);
 
-            Button time = (Button) findViewById(R.id.Date);
-            time.setText( month + "/" + day +  "/" + year);
+            Button date = (Button) findViewById(R.id.Date);
+            String m = monthToString(mDate.getMonth());
+
+            date.setText( m + " " + mDate.getDay() +  ", " + mDate.getYear());
 		}
-	}
+
+        private String monthToString(int month) {
+            String m ="NONE";
+            switch (month) {
+                case 1:
+                    m = "Jan";
+                case 2:
+                    m = "Feb";
+                case 3:
+                    m = "Mar";
+                case 4:
+                    m = "Apr";
+                case 5:
+                    m = "May";
+                case 6:
+                    m = "Jun";
+                case 7:
+                    m = "Jul";
+                case 8:
+                    m = "Aug";
+                case 9:
+                    m = "Sept";
+                case 10:
+                    m = "Oct";
+                case 11:
+                    m = "Nov";
+                case 12:
+                    m = "Dec";
+            }
+            return m;
+        }
+    }
 	
 	public void showTimePickerDialog(View v) {
 	    DialogFragment newFragment = new TimePickerFragment();
@@ -120,7 +140,16 @@ public class AddEvent extends Activity {
 			mDate.setMinutes(minute);
 
             Button time = (Button) findViewById(R.id.Time);
-            time.setText(mDate.getHours() + ":" +mDate.getMinutes());
+
+            int h = mDate.getHours();
+            String aorp = " AM";
+
+            if(h > 12){
+                h = h -12;
+                aorp = " PM";
+            }
+            time.setText(h + ":" +mDate.getMinutes() + aorp);
+
 		}
 	}
 }
