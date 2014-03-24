@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,14 @@ import android.widget.TextView;
 
 import com.parse.ParseObject;
 
-public class EventArrayAdapter extends ArrayAdapter<ParseObject>
+public class EventArrayAdapter extends ArrayAdapter<Event>
 {	
 	public EventArrayAdapter(Context context)
 	{
 		super(context, R.layout.list_item);
 	}
 	
-	public void add (ParseObject object)
+	public void add (Event object)
 	{
 		super.add(object);
 	}
@@ -34,10 +35,11 @@ public class EventArrayAdapter extends ArrayAdapter<ParseObject>
 		View listItem = inflater.inflate(R.layout.list_item, parent, false);
 		
 		TextView name = (TextView) listItem.findViewById(R.id.itemName);
-		name.setText(this.getItem(position).get(Json.KEY_NAME).toString());
+		name.setText(this.getItem(position).getName());
 		
 		TextView date = (TextView) listItem.findViewById(R.id.itemDate);
-		date.setText(this.getItem(position).get(Json.KEY_DATE).toString());
+		String time = this.getItem(position).getDate();
+		date.setText(AddEvent.parseDate(time) + ", " + AddEvent.parseTime(time));
 		
 		return listItem	;
 	}

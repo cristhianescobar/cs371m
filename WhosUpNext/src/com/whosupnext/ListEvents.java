@@ -32,7 +32,7 @@ public class ListEvents extends ListActivity {
 
     private void eventsFromParse() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(AddEvent.EVENTS_TABLE);
-        query.whereExists(Json.KEY_NAME);
+        query.whereExists(Event.KEY_NAME);
         query.findInBackground(new FindCallback<ParseObject>() {
 
 
@@ -41,7 +41,7 @@ public class ListEvents extends ListActivity {
                 for (ParseObject comment : parseObjects) {
                     // This does not require a network access.
                     ParseObject post = comment.getParseObject("post");
-                    eventList.add(comment);
+                    eventList.add(new Event(comment));
                     Log.d("post", "retrieved a related post");
                 }
             }
