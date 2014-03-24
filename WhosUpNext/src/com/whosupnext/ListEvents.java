@@ -1,28 +1,33 @@
 package com.whosupnext;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.util.LinkedList;
 import java.util.List;
 
-public class ListEvents extends Activity {
+public class ListEvents extends ListActivity {
 
-    List<ParseObject> eventList = new LinkedList<ParseObject>();
+	EventArrayAdapter eventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
+        eventList = new EventArrayAdapter(this);
+        
         eventsFromParse();
+        
+        
+        setListAdapter(eventList);
 
-
-
+		
     }
 
     private void eventsFromParse() {

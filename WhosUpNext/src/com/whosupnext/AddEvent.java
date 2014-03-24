@@ -1,5 +1,6 @@
 package com.whosupnext;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -18,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
+@SuppressLint("ValidFragment")
 public class AddEvent extends Activity {
 
 
@@ -83,37 +85,37 @@ public class AddEvent extends Activity {
 			mDate.setDate(day);
 
             Button date = (Button) findViewById(R.id.Date);
-            String m = monthToString(mDate.getMonth());
-
-            date.setText( m + " " + mDate.getDay() +  ", " + mDate.getYear());
+            
+            //date.setText(mDate.toString());
+            date.setText( month + " " + day +  ", " + year);
 		}
 
         private String monthToString(int month) {
             String m ="NONE";
             switch (month) {
-                case 1:
+                case 0:
                     m = "Jan";
-                case 2:
+                case 1:
                     m = "Feb";
-                case 3:
+                case 2:
                     m = "Mar";
-                case 4:
+                case 3:
                     m = "Apr";
-                case 5:
+                case 4:
                     m = "May";
-                case 6:
+                case 5:
                     m = "Jun";
-                case 7:
+                case 6:
                     m = "Jul";
-                case 8:
+                case 7:
                     m = "Aug";
-                case 9:
+                case 8:
                     m = "Sept";
-                case 10:
+                case 9:
                     m = "Oct";
-                case 11:
+                case 10:
                     m = "Nov";
-                case 12:
+                case 11:
                     m = "Dec";
             }
             return m;
@@ -144,14 +146,13 @@ public class AddEvent extends Activity {
 
             Button time = (Button) findViewById(R.id.Time);
 
-            int h = mDate.getHours();
             String aorp = " AM";
 
-            if(h > 12){
-                h = h -12;
+            if(hourOfDay > 12){
+            	hourOfDay = hourOfDay -12;
                 aorp = " PM";
             }
-            time.setText(h + ":" +mDate.getMinutes() + aorp);
+            time.setText(hourOfDay + ":" + minute + aorp);
 
 		}
 	}

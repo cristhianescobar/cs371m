@@ -10,10 +10,10 @@ import com.parse.ParseObject;
 public class Json {
 
     public static final String KEY_NAME = "name";
-    private static final String KEY_DATE = "date";
-    private static final String KEY_PHONE_NUMBER = "phone";
-    private static final String KEY_LOCATION = "location";
-    private static final String KEY_DETAILS = "details";
+    public static final String KEY_DATE = "date";
+    public static final String KEY_PHONE_NUMBER = "phone";
+    public static final String KEY_LOCATION = "location";
+    public static final String KEY_DETAILS = "details";
     private ParseObject json;
 
     public Json(String parseTableName){
