@@ -25,10 +25,19 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.whosupnext.SignIn" >
+        </activity>
+        <activity
+            android:name="com.whosupnext.SignUp" >
+        </activity>
+        <activity
             android:name="com.whosupnext.ListEvents" >
         </activity>
         <activity
             android:name="com.whosupnext.AddEvent" >
+        </activity>
+        <activity
+            android:name="com.whosupnext.EventDetail" >
         </activity>
         
     </application>

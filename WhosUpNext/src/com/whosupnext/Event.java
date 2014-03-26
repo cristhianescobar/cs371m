@@ -1,5 +1,6 @@
 package com.whosupnext;
 
+
 import com.parse.ParseObject;
 
 /**
@@ -15,9 +16,12 @@ public class Event {
     public static final String KEY_LOCATION = "location";
     public static final String KEY_DETAILS = "details";
     private ParseObject json;
-
+    private String KEY_ID;
+    
     public Event(String parseTableName){
         json = new ParseObject(parseTableName);
+        KEY_ID = json.getObjectId();
+      
     }
     public Event(ParseObject obj ){
     	 json = new ParseObject(obj.getClassName());
@@ -26,6 +30,7 @@ public class Event {
     	 setLocation(obj.get(KEY_LOCATION).toString());
     	 setPhoneNumber(obj.get(KEY_PHONE_NUMBER).toString());
     	 setDetails(obj.get(KEY_DETAILS).toString());
+    	
     }
 
     public void setName(String name) throws IllegalArgumentException {
@@ -80,6 +85,20 @@ public class Event {
 
     public void send() {
         json.saveInBackground();
+    }
+    
+    public String getID(){
+    	return KEY_ID;
+    }
+    
+    public String getParseObjectID(){
+    	return KEY_ID;
+    }
+    
+    public static void delete(String table, String id){
+    	ParseObject toDelete = new ParseObject(table);
+    	toDelete.remove(id);
+    	toDelete.saveInBackground();
     }
 }
 

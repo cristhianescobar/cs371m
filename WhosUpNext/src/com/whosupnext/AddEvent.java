@@ -65,8 +65,15 @@ public class AddEvent extends Activity {
 	        request.setDetails(mDetails.getText().toString());
 	        request.send();
 	
-	
-	        Intent intent = new Intent(this, MainActivity.class);
+	        
+	        Intent intent = new Intent(this, EventDetail.class);
+	        intent.putExtra("id", request.getParseObjectID());
+	        intent.putExtra("name", request.getName());
+	        intent.putExtra("date", request.getDate());
+	        intent.putExtra("location", request.getLocation());
+	        intent.putExtra("phone", request.getPhoneNumber());
+	        intent.putExtra("details", request.getDetails());
+	        
 	        startActivity(intent);
     	}
     	catch(IllegalArgumentException e){
