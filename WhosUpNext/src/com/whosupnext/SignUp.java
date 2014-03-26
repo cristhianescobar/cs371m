@@ -62,7 +62,7 @@ public class SignUp extends Activity {
 				    }
 					else
 					{
-						Log.d("SignUp", e.getMessage());
+						Log.e("SignUp", e.getMessage());
 						String msg = "";
 						if (e.getMessage().substring(0, 13).equals("invalid email"))
 						{
@@ -83,7 +83,7 @@ public class SignUp extends Activity {
 		}
 		catch (Exception e)
 		{
-			Log.d("SignUp", e.getMessage());
+			Log.e("SignUp", e.getMessage());
 			String msg = "";
 			if (e.getMessage().substring(0, 11).equals("Invalid int"))
 			{

@@ -34,7 +34,7 @@ public class SignIn extends Activity {
 			    }
 				else
 				{
-					Log.d("SignIn", e.getMessage());
+					Log.e("SignIn", e.getMessage());
 					String msg = "";
 					if (e.getMessage().equals("invalid login credentials"))
 					{

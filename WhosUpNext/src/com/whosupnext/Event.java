@@ -1,12 +1,92 @@
 package com.whosupnext;
 
 
-import com.parse.ParseObject;
+import java.util.Date;
+
+import com.parse.*;
 
 /**
  * Created by escobarcristhian18 on 3/21/14.
  */
 
+
+@ParseClassName("Event")
+public class Event extends ParseObject
+{
+	public Event ()
+	{
+		
+	}
+	
+	public String getId() {
+		return getObjectId();
+	}
+	
+	public String getName(){
+        return getString("name");
+    }
+	
+	public void setName(String name) throws IllegalArgumentException {
+        if (name == null || name.equals(""))
+            throw new IllegalArgumentException("Missing Event");
+        put("name", name);
+    }
+	
+	public Date getDate(){
+        return getDate("date");
+    }
+	
+	public void setDate(Date date) throws IllegalArgumentException {
+        if (date == null)
+            throw new IllegalArgumentException("Missing Date");
+        put("date", date);
+    }
+	
+	public String getSport(){
+        return getString("sport");
+    }
+	
+	public void setSport(String sport) throws IllegalArgumentException {
+        if (sport == null || sport.equals(""))
+            throw new IllegalArgumentException("Missing Sport");
+        put("sport", sport);
+    }
+	
+	public String getDetails(){
+        return getString("details");
+    }
+	
+	public void setDetails(String details) {
+        put("details", details);
+    }
+	
+	public ParseGeoPoint getLocation(){
+        return getParseGeoPoint("location");
+    }
+	
+	public void setLocation(ParseGeoPoint location) throws IllegalArgumentException {
+        if (location == null)
+            throw new IllegalArgumentException("Missing Location");
+        put("location", location);
+    }
+	
+	public ParseUser getHost() {
+		return getParseUser("host");
+	}
+	
+	public void setHost(ParseUser host) throws IllegalArgumentException {
+        if (host == null)
+            throw new IllegalArgumentException("Missing Host");
+        put("host", host);
+    }
+}
+
+
+
+
+
+
+/*
 //@ParseClassName("Event")
 public class Event {
 
@@ -104,3 +184,4 @@ public class Event {
 
 
 
+*/

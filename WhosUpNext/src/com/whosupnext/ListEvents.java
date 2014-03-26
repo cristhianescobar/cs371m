@@ -36,13 +36,7 @@ public class ListEvents extends ListActivity {
     {
     	Intent intent = new Intent(this, EventDetail.class);
     	Event request = (Event) eventList.getItem(position);
-    	intent.putExtra("id", request.getParseObjectID());
-    	intent.putExtra("name", request.getName());
-        intent.putExtra("date", request.getDate());
-        intent.putExtra("location", request.getLocation());
-        intent.putExtra("phone", request.getPhoneNumber());
-        intent.putExtra("details", request.getDetails());
-    	intent.putExtra("index", position);
+    	intent.putExtra("id", request.getObjectId());
     	startActivity(intent);
     }
     
@@ -54,7 +48,6 @@ public class ListEvents extends ListActivity {
 
     private void eventsFromParse() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(AddEvent.EVENTS_TABLE);
-        query.whereExists(Event.KEY_NAME);
         query.findInBackground(new FindCallback<ParseObject>() {
 
 
@@ -62,7 +55,7 @@ public class ListEvents extends ListActivity {
             public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
                 for (ParseObject comment : parseObjects) {
                     
-                    eventList.add(new Event(comment));
+                    eventList.add(new Event());
                     Log.d("post", "retrieved a related post");
                 }
             }

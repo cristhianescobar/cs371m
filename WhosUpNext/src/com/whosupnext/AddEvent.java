@@ -1,5 +1,10 @@
 package com.whosupnext;
 
+import java.util.Date;
+
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -19,201 +24,186 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-
-
 @SuppressLint("ValidFragment")
 public class AddEvent extends Activity {
 
-
-    public static final String EVENTS_TABLE = "CreateEvent";
-    private static Time mTime = new Time();
-    private EditText mEventName;
-    private EditText mPhoneNumber;
-    private EditText mLocation;
-    private EditText mDetails;
-
-
+	public static final String EVENTS_TABLE = "CreateEvent";
+	private static Date mDate;
+	
+	private ParseUser mUser;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_event);
-
-        mTime = new Time();
-        mTime.setToNow();
-
-        mEventName = (EditText) findViewById(R.id.EventName);
-        mPhoneNumber = (EditText) findViewById(R.id.Phone) ;
-        mLocation = (EditText) findViewById(R.id.Location);
-        mDetails = (EditText) findViewById(R.id.Details);
-
+		
+		mUser = ParseUser.getCurrentUser();
+		if (mUser == null)
+		{
+			Log.wtf("AddEvent", "Must be logged in to add event!");
+			assert(false);
+		}
+		
+		mDate = new Date();
+		
+		Button time = (Button) findViewById(R.id.time_value);
+		time.setText(parseTime(mDate));
+		
+		Button date = (Button) findViewById(R.id.date_value);
+		date.setText(parseDate(mDate));
 	}
 	
+	public void generateEvent(View v)
+	{
+		try
+		{
+			EditText name = (EditText) findViewById(R.id.name_value);
+			EditText sport = (EditText) findViewById(R.id.sport_value);
+			EditText location = (EditText) findViewById(R.id.location_value);
+			EditText details = (EditText) findViewById(R.id.details_value);
+			
+			Event newEvent = new Event();
+			newEvent.setName(name.getText().toString());
+			newEvent.setDate(mDate);
+			newEvent.setSport(sport.getText().toString());
+			newEvent.setLocation(new ParseGeoPoint(40.0, -30.0));
+			newEvent.setDetails(details.getText().toString());
+			newEvent.setHost(mUser);
+			newEvent.saveInBackground();
+
+			Intent intent = new Intent(this, EventDetail.class);
+			intent.putExtra("id", newEvent.getId());
+
+			startActivity(intent);
+		} 
+		catch (IllegalArgumentException e)
+		{
+			Log.e("ERROR", "ToString: " + e.toString());
+			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+		}
+	}
+
 	public void showDatePickerDialog(View v) {
-	    DialogFragment newFragment = new DatePickerFragment();
-	    newFragment.show(getFragmentManager(), "datePicker");
+		DialogFragment newFragment = new DatePickerFragment();
+		newFragment.show(getFragmentManager(), "datePicker");
 	}
 
-    public void generateEvent(View v){
-
-    	
-    	try{
-    		Event request = new Event(EVENTS_TABLE);
-	        request.setName(mEventName.getText().toString());
-	        request.setDate(mTime.toString());
-	        request.setPhoneNumber(mPhoneNumber.getText().toString());
-	        request.setLocation(mLocation.getText().toString());
-	        request.setDetails(mDetails.getText().toString());
-	        request.send();
-	
-	        
-	        Intent intent = new Intent(this, EventDetail.class);
-	        intent.putExtra("id", request.getParseObjectID());
-	        intent.putExtra("name", request.getName());
-	        intent.putExtra("date", request.getDate());
-	        intent.putExtra("location", request.getLocation());
-	        intent.putExtra("phone", request.getPhoneNumber());
-	        intent.putExtra("details", request.getDetails());
-	        
-	        startActivity(intent);
-    	}
-    	catch(IllegalArgumentException e){
-    		printToast(e.getMessage());
-    	}
-    }
-	
-    public void printToast(String text){
-    	int duration = Toast.LENGTH_SHORT;
-    	Context c = getApplicationContext();
-    	Toast toast = Toast.makeText(c, text, duration);
-    	
-    	toast.show();
-    }
-    
-	public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+	public class DatePickerFragment extends DialogFragment implements
+			DatePickerDialog.OnDateSetListener {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the value of mTime as the default date in the picker
-			int year = mTime.year;
-			int month = mTime.month;
-			int day = mTime.monthDay;
+			// Use the value of mDate as the default date in the picker
+			int year = mDate.getYear() + 1900;
+			int month = mDate.getMonth();
+			int day = mDate.getDate();
 			
 			// Create a new instance of DatePickerDialog and return it
 			return new DatePickerDialog(getActivity(), this, year, month, day);
 		}
 
 		public void onDateSet(DatePicker view, int year, int month, int day) {
+			mDate.setYear(year - 1900);
+			mDate.setMonth(month);
+			mDate.setDate(day);
 
-			mTime.year = year;
-			mTime.month = month;
-			mTime.monthDay = day;
-
-            Button date = (Button) findViewById(R.id.Date);
-            date.setText(parseDate(mTime.toString()));
+			Button date = (Button) findViewById(R.id.date_value);
+			date.setText(parseDate(mDate));
 		}
 
-        
-    }
-	
-	public void showTimePickerDialog(View v) {
-	    DialogFragment newFragment = new TimePickerFragment();
-	    newFragment.show(getFragmentManager(), "timePicker");
 	}
-	
-	public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+	public void showTimePickerDialog(View v) {
+		DialogFragment newFragment = new TimePickerFragment();
+		newFragment.show(getFragmentManager(), "timePicker");
+	}
+
+	public class TimePickerFragment extends DialogFragment implements
+			TimePickerDialog.OnTimeSetListener {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the value of mTime as the default values for the picker
-			int hour = mTime.hour;
-			int minute = mTime.minute;
-			
+			// Use the value of mDate as the default values for the picker
+			int hour = mDate.getHours();
+			int minute = mDate.getMinutes();
+
 			// Create a new instance of TimePickerDialog and return it
 			return new TimePickerDialog(getActivity(), this, hour, minute,
-			DateFormat.is24HourFormat(getActivity()));
+					DateFormat.is24HourFormat(getActivity()));
 		}
 
 		public void onTimeSet(TimePicker view, int hour, int minute) {
-			mTime.hour = hour;
-			mTime.minute = minute;
+			mDate.setHours(hour);
+			mDate.setMinutes(minute);
 
-            Button time = (Button) findViewById(R.id.Time);
-            time.setText(parseTime(mTime.toString()));
+			Button time = (Button) findViewById(R.id.time_value);
+			time.setText(parseTime(mDate));
 		}
 	}
-	
-	public static String parseTime (String time)
-	{
-		Log.d("time", "Len: " + time.length());
-		Integer hour = Integer.parseInt(time.substring(9, 11));
-		String minute = time.substring(11, 13);
-		if ( hour < 12)
-		{
-			if (hour == 0)
-			{
+
+	public static String parseTime(Date time) {
+		int hour = mDate.getHours();
+		int minute = mDate.getMinutes();
+		
+		if (hour < 12) {
+			if (hour == 0) {
 				hour = 12;
 			}
 			return hour + ":" + minute + " AM";
-		}
-		else
-		{
-			hour  = hour - 12;
-			if (hour == 0)
-			{
+		} else {
+			hour = hour - 12;
+			if (hour == 0) {
 				hour = 12;
 			}
 			return hour + ":" + minute + " PM";
 		}
 	}
-	
-	public static String parseDate (String date)
-	{
-		Log.d("date", "Len: " + date.length());
-		Log.d("date", "Date: " + date);
-		Log.d("date", "month: " + date.substring(4, 6));
+
+	public static String parseDate(Date date) {
+		int year = mDate.getYear() + 1900;
+		int month = mDate.getMonth();
+		int day = mDate.getDate();
 		
-		String year = date.substring(0, 4);
-		Integer month = Integer.parseInt(date.substring(4, 6));
-		String day = date.substring(6, 8);
-		Log.d("date", "month: " + month);
 		String m = "None";
-        switch ((int) month) {
-            case 1:
-                m = "Jan";
-                break;
-            case 2:
-                m = "Feb";
-                break;
-            case 3:
-                m = "Mar";
-                break;
-            case 4:
-                m = "Apr";
-                break;
-            case 5:
-                m = "May";
-                break;
-            case 6:
-                m = "Jun";
-                break;
-            case 7:
-                m = "Jul";
-                break;
-            case 8:
-                m = "Aug";
-                break;
-            case 9:
-                m = "Sept";
-                break;
-            case 10:
-                m = "Oct";
-                break;
-            case 11:
-                m = "Nov";
-                break;
-            case 12:
-                m = "Dec";
-                break;
-        }
-		
-        return m + " " + day + ", " + year;
+		switch ((int) month) {
+		case 0:
+			m = "Jan";
+			break;
+		case 1:
+			m = "Feb";
+			break;
+		case 2:
+			m = "Mar";
+			break;
+		case 3:
+			m = "Apr";
+			break;
+		case 4:
+			m = "May";
+			break;
+		case 5:
+			m = "Jun";
+			break;
+		case 6:
+			m = "Jul";
+			break;
+		case 7:
+			m = "Aug";
+			break;
+		case 8:
+			m = "Sept";
+			break;
+		case 9:
+			m = "Oct";
+			break;
+		case 10:
+			m = "Nov";
+			break;
+		case 11:
+			m = "Dec";
+			break;
+		}
+
+		return m + " " + day + ", " + year;
 	}
+	
 }

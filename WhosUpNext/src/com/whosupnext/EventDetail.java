@@ -25,17 +25,19 @@ public class EventDetail extends Activity {
 		
 		
 		((TextView) findViewById(R.id.name_value)).setText(name);
-		((TextView) findViewById(R.id.date_value)).setText(AddEvent.parseDate(date));
-		((TextView) findViewById(R.id.time_value)).setText(AddEvent.parseTime(date));
+		//((TextView) findViewById(R.id.date_value)).setText(AddEvent.parseDate(date));
+		//((TextView) findViewById(R.id.time_value)).setText(AddEvent.parseTime(date));
 		((TextView) findViewById(R.id.phone_value)).setText(phone);
 		((TextView) findViewById(R.id.location_value)).setText(location);
 		((TextView) findViewById(R.id.details_value)).setText(details);
 		
 	}
 	
+	/*
 	public void deleteEvent(View v) {
 		Event.delete(AddEvent.EVENTS_TABLE, objectId);
 		 Intent intent = new Intent(this, MainActivity.class);
 	     startActivity(intent);
 	}
+	*/
 }

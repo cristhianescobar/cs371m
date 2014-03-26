@@ -38,8 +38,8 @@ public class EventArrayAdapter extends ArrayAdapter<Event>
 		name.setText(this.getItem(position).getName());
 		
 		TextView date = (TextView) listItem.findViewById(R.id.itemDate);
-		String time = this.getItem(position).getDate();
-		date.setText(AddEvent.parseDate(time) + ", " + AddEvent.parseTime(time));
+		String time = this.getItem(position).getDate().toString();
+//		date.setText(AddEvent.parseDate(time) + ", " + AddEvent.parseTime(time));
 		
 		return listItem	;
 	}

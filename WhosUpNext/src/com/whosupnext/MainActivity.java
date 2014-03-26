@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 
@@ -24,8 +25,11 @@ public class MainActivity extends Activity {
 		
 		if (!parseInit)
 		{
+			Log.d("MainActivity", "Initializing Parse");
 	        //Application ID AaxBmFVakIxhS7XajgFg8CveAlMxyX5zifrU00If
 	        //Client Key N9lPXcTEmixoJOkVNpxKb6CRpNoNkqP8LUetMvFv
+			
+			ParseObject.registerSubclass(Event.class);
 	        Parse.initialize(this, "AaxBmFVakIxhS7XajgFg8CveAlMxyX5zifrU00If", "N9lPXcTEmixoJOkVNpxKb6CRpNoNkqP8LUetMvFv");
 	        parseInit = true;
 		}
