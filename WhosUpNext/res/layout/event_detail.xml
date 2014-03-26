@@ -31,18 +31,32 @@
         android:layout_below="@+id/name_value"
         android:layout_toRightOf="@+id/host_label"/>
     
+    <TextView
+        android:id="@+id/phone_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/host_value"
+        android:text="@string/phone_label" />
+    
+    <TextView
+        android:id="@+id/phone_value"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/host_value"
+        android:layout_toRightOf="@+id/phone_label"/>
+    
 	<TextView
         android:id="@+id/date_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/host_value"
+        android:layout_below="@+id/phone_value"
         android:text="@string/date_label" />
     
     <TextView
         android:id="@+id/date_value"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:layout_below="@+id/host_value"
+        android:layout_below="@+id/phone_value"
         android:layout_toRightOf="@+id/date_label"/>
      
     <TextView

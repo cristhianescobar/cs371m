@@ -38,6 +38,7 @@ public class ListEvents extends ListActivity {
     	Event event = (Event) adapter.getItem(position);
 		intent.putExtra("id", event.getId());
 		startActivity(intent);
+		finish();
     }
 
     private void eventsFromParse() {

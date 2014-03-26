@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 public class EventDetail extends Activity
 {
+	static Event mEvent;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -38,33 +40,8 @@ public class EventDetail extends Activity
 				{
 					Log.d("EventDetail", "Found Event " + (event != null));
 					
-					((TextView) findViewById(R.id.name_value)).setText(event.getName());
-					ParseUser host = event.getHost();
-					try
-					{
-						((TextView) findViewById(R.id.host_value)).setText(host.fetchIfNeeded().getEmail());
-					}
-					catch (ParseException e1)
-					{
-						Log.wtf("EventDetail", e1.getMessage());
-						assert(false);
-					}
-					Date date = event.getDate();
-					((TextView) findViewById(R.id.date_value)).setText(AddEvent.parseDate(date));
-					((TextView) findViewById(R.id.time_value)).setText(AddEvent.parseTime(date));
-					((TextView) findViewById(R.id.sport_value)).setText(event.getSport());
-					((TextView) findViewById(R.id.location_value)).setText(event.getLocation().toString());
-					((TextView) findViewById(R.id.details_value)).setText(event.getDetails());
-					
-					Button delete = ((Button) findViewById(R.id.delete_event));
-					if (host.getEmail().equals(ParseUser.getCurrentUser().getEmail()))
-					{
-						delete.setVisibility(View.VISIBLE);
-					}
-					else
-					{
-						delete.setVisibility(View.GONE);
-					}
+					EventDetail.mEvent = event;
+					displayData();
 				}
 				else
 				{
@@ -75,10 +52,47 @@ public class EventDetail extends Activity
 		});
 	}
 	
+	public void displayData()
+	{
+		((TextView) findViewById(R.id.name_value)).setText(mEvent.getName());
+		ParseUser host = mEvent.getHost();
+		try
+		{
+			((TextView) findViewById(R.id.host_value)).setText(host.fetchIfNeeded().getEmail());
+			((TextView) findViewById(R.id.phone_value)).setText(host.fetchIfNeeded().getNumber("phone").toString());
+		}
+		catch (ParseException e1)
+		{
+			Log.wtf("EventDetail", e1.getMessage());
+			assert(false);
+		}
+		Date date = mEvent.getDate();
+		((TextView) findViewById(R.id.date_value)).setText(AddEvent.parseDate(date));
+		((TextView) findViewById(R.id.time_value)).setText(AddEvent.parseTime(date));
+		((TextView) findViewById(R.id.sport_value)).setText(mEvent.getSport());
+		((TextView) findViewById(R.id.location_value)).setText(mEvent.getLocation().toString());
+		((TextView) findViewById(R.id.details_value)).setText(mEvent.getDetails());
+		
+		Button delete = ((Button) findViewById(R.id.delete_event));
+		
+		ParseUser current = ParseUser.getCurrentUser();
+		if (current == null)
+		{
+			delete.setVisibility(View.GONE);
+		}
+		else if (host.getEmail().equals(current.getEmail()))
+		{
+			delete.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			delete.setVisibility(View.GONE);
+		}
+	}
 	
 	public void deleteEvent(View v)
 	{
-		
+		mEvent.deleteInBackground();
 		finish();
 	}
 }
