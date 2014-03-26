@@ -1,10 +1,8 @@
 package com.whosupnext;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import android.content.Context;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.parse.ParseObject;
 
 public class EventArrayAdapter extends ArrayAdapter<Event>
 {	
@@ -29,18 +26,19 @@ public class EventArrayAdapter extends ArrayAdapter<Event>
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		LayoutInflater inflater = (LayoutInflater) this.getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		View listItem = inflater.inflate(R.layout.list_item, parent, false);
+		View v = inflater.inflate(R.layout.list_item, parent, false);
 		
-		TextView name = (TextView) listItem.findViewById(R.id.itemName);
-		name.setText(this.getItem(position).getName());
+		Event e = this.getItem(position);
 		
-		TextView date = (TextView) listItem.findViewById(R.id.itemDate);
-		String time = this.getItem(position).getDate().toString();
-//		date.setText(AddEvent.parseDate(time) + ", " + AddEvent.parseTime(time));
+		TextView name = (TextView) v.findViewById(R.id.itemName);
+		name.setText(e.getName());
 		
-		return listItem	;
+		Date date = e.getDate();
+		TextView time = (TextView) v.findViewById(R.id.itemDate);
+		time.setText(AddEvent.parseDate(date) + ", " + AddEvent.parseTime(date));
+		
+		return v	;
 	}
 }

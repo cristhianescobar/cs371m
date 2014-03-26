@@ -1,112 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
     
+    android:gravity="center" >
+
     <TextView
-        android:id="@+id/name_lable"
+        android:id="@+id/name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:text="@string/name_lable"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:text="@string/name_label" />
     
-    <TextView
+	<TextView
         android:id="@+id/name_value"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:layout_toRightOf="@+id/name_lable" />
+        android:layout_width="fill_parent" 
+        android:layout_toRightOf="@+id/name_label"/>
     
     <TextView
-        android:id="@+id/date_lable"
+        android:id="@+id/host_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:text="@string/date_lable"
-        android:layout_below="@+id/name_lable" />
+        android:layout_below="@+id/name_value"
+        android:text="@string/host_label" />
+    
+    <TextView
+        android:id="@+id/host_value"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/name_value"
+        android:layout_toRightOf="@+id/host_label"/>
+    
+	<TextView
+        android:id="@+id/date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/host_value"
+        android:text="@string/date_label" />
     
     <TextView
         android:id="@+id/date_value"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:layout_below="@+id/name_lable"
-        android:layout_toRightOf="@+id/date_lable" />
-    
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/host_value"
+        android:layout_toRightOf="@+id/date_label"/>
+     
     <TextView
-        android:id="@+id/time_lable"
+        android:id="@+id/time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:text="@string/time_lable"
-        android:layout_below="@+id/date_lable" />
+        android:layout_below="@+id/date_value"
+        android:text="@string/time_label" />
     
     <TextView
         android:id="@+id/time_value"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:layout_below="@+id/date_lable"
-        android:layout_toRightOf="@+id/time_lable" />
-    
-        <TextView
-        android:id="@+id/phone_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:text="@string/phone_lable"
-        android:layout_below="@+id/time_value" />
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/date_value"
+        android:layout_toRightOf="@+id/time_label"/>
     
     <TextView
-        android:id="@+id/phone_value"
+        android:id="@+id/sport_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:layout_below="@+id/time_lable"
-        android:layout_toRightOf="@+id/phone_number" />
+        android:layout_below="@+id/time_value"
+        android:text="@string/sport_label" />
     
-    <TextView
-        android:id="@+id/location"
+     <TextView
+        android:id="@+id/sport_value"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" 
+        android:layout_below="@+id/time_value"
+        android:layout_toRightOf="@+id/sport_label"/>
+     
+	<TextView
+        android:id="@+id/location_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:text="@string/location_lable"
-        android:layout_below="@+id/phone_value" />
+        android:layout_below="@+id/sport_value"
+        android:text="@string/location_label" />
     
-    <TextView
+	<TextView
         android:id="@+id/location_value"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" 
+        android:layout_below="@+id/sport_value"
+        android:layout_toRightOf="@+id/location_label"/>
+     
+	<TextView
+		android:id="@+id/details_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:layout_below="@+id/phone_value"
-        android:layout_toRightOf="@+id/location" />
-    
-
-    <TextView
-        android:id="@+id/details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-      	android:textSize="24sp"
-        android:text="@string/details_lable"
-        android:layout_below="@+id/location" />
-    
-    <TextView
-        android:id="@+id/details_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-      	android:textSize="24sp"
         android:layout_below="@+id/location_value"
-        android:layout_toRightOf="@+id/details" />
+        android:text="@string/details_label" />
     
+	<TextView
+        android:id="@+id/details_value"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" 
+        android:singleLine="false"
+        android:layout_below="@+id/location_value"
+        android:layout_toRightOf="@+id/details_label"/>
+     
     <Button
         android:id="@+id/delete_event"
         android:layout_width="wrap_content"
    		android:layout_height="wrap_content"
-        android:text="@string/delete_event"
-         android:layout_below="@+id/details"
-        android:onClick="deleteEvent"
-         />
+        android:text="@string/delete"
+        android:layout_below="@+id/details_value"
+        android:onClick="deleteEvent" />
     
 </RelativeLayout>

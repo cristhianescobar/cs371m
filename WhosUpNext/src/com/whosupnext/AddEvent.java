@@ -2,8 +2,10 @@ package com.whosupnext;
 
 import java.util.Date;
 
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,7 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +32,6 @@ public class AddEvent extends Activity {
 	private static Date mDate;
 	
 	private ParseUser mUser;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class AddEvent extends Activity {
 		date.setText(parseDate(mDate));
 	}
 	
-	public void generateEvent(View v)
+	public void submitEvent(View v)
 	{
 		try
 		{
@@ -63,23 +63,43 @@ public class AddEvent extends Activity {
 			EditText location = (EditText) findViewById(R.id.location_value);
 			EditText details = (EditText) findViewById(R.id.details_value);
 			
-			Event newEvent = new Event();
-			newEvent.setName(name.getText().toString());
-			newEvent.setDate(mDate);
-			newEvent.setSport(sport.getText().toString());
-			newEvent.setLocation(new ParseGeoPoint(40.0, -30.0));
-			newEvent.setDetails(details.getText().toString());
-			newEvent.setHost(mUser);
-			newEvent.saveInBackground();
+			final Context context = this;
+			
+			final Event event = new Event();
+			event.setName(name.getText().toString());
+			event.setDate(mDate);
+			event.setSport(sport.getText().toString());
+			event.setLocation(new ParseGeoPoint(40.0, -30.0));
+			event.setDetails(details.getText().toString());
+			event.setHost(mUser);
+			event.saveInBackground(new SaveCallback()
+			{
+				public void done(ParseException e)
+				{
+					if (e == null)
+					{
+						Log.d("AddEvent", "Created event " + event.getId());
+						
+						Intent intent = new Intent(context, EventDetail.class);
+						intent.putExtra("id", event.getId());
+						startActivity(intent);
+						finish();
+					}
+					else
+					{
+						Log.e("AddEvent", e.toString());
+						Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+					}
+				}
+			});
+			
+			
 
-			Intent intent = new Intent(this, EventDetail.class);
-			intent.putExtra("id", newEvent.getId());
-
-			startActivity(intent);
+			
 		} 
 		catch (IllegalArgumentException e)
 		{
-			Log.e("ERROR", "ToString: " + e.toString());
+			Log.e("AddEvent", e.toString());
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
@@ -141,27 +161,41 @@ public class AddEvent extends Activity {
 	}
 
 	public static String parseTime(Date time) {
-		int hour = mDate.getHours();
-		int minute = mDate.getMinutes();
+		int hour = time.getHours();
+		int minute = time.getMinutes();
 		
 		if (hour < 12) {
 			if (hour == 0) {
 				hour = 12;
 			}
-			return hour + ":" + minute + " AM";
+			if (minute < 10)
+			{
+				return hour + ":0" + minute + " AM";
+			}
+			else
+			{
+				return hour + ":" + minute + " AM";
+			}
 		} else {
 			hour = hour - 12;
 			if (hour == 0) {
 				hour = 12;
 			}
-			return hour + ":" + minute + " PM";
+			if (minute < 10)
+			{
+				return hour + ":0" + minute + " PM";
+			}
+			else
+			{
+				return hour + ":" + minute + " PM";
+			}
 		}
 	}
 
 	public static String parseDate(Date date) {
-		int year = mDate.getYear() + 1900;
-		int month = mDate.getMonth();
-		int day = mDate.getDate();
+		int year = date.getYear() + 1900;
+		int month = date.getMonth();
+		int day = date.getDate();
 		
 		String m = "None";
 		switch ((int) month) {

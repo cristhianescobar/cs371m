@@ -9,23 +9,23 @@
         android:id="@+id/name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Event Name: " />
+        android:text="@string/name_label" />
     
-     <EditText
+	<EditText
         android:id="@+id/name_value"
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
         android:layout_width="fill_parent" 
         android:layout_toRightOf="@+id/name_label"/>
      
-     <TextView
+    <TextView
         android:id="@+id/date_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_value"
-        android:text="Date: " />
+        android:text="@string/date_label" />
     
-     <Button
+    <Button
         android:id="@+id/date_value"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" 
@@ -33,14 +33,14 @@
         android:layout_below="@+id/name_value"
         android:layout_toRightOf="@+id/date_label"/>
      
-     <TextView
+    <TextView
         android:id="@+id/time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/date_value"
-        android:text="Time: " />
+        android:text="@string/time_label" />
     
-     <Button
+    <Button
         android:id="@+id/time_value"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" 
@@ -48,14 +48,14 @@
         android:layout_below="@+id/date_value"
         android:layout_toRightOf="@+id/time_label"/>
 	
-     <TextView
+    <TextView
         android:id="@+id/sport_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/time_value"
-        android:text="Sport: " />
+        android:text="@string/sport_label" />
     
-     <EditText
+    <EditText
         android:id="@+id/sport_value"
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
@@ -68,9 +68,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sport_value"
-        android:text="Loaction: " />
+        android:text="@string/location_label" />
     
-     <EditText
+    <EditText
         android:id="@+id/location_value"
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
@@ -78,26 +78,28 @@
         android:layout_below="@+id/sport_value"
         android:layout_toRightOf="@+id/location_label"/>
      
-     <TextView
+    <TextView
         android:id="@+id/details_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/location_value"
-        android:text="Details: " />
+        android:text="@string/details_label" />
     
-     <EditText
+    <EditText
         android:id="@+id/details_value"
         android:layout_height="wrap_content"
-        android:inputType="textCapWords"
+        android:inputType="textCapSentences"
         android:layout_width="fill_parent" 
+        android:singleLine="false"
         android:layout_below="@+id/location_value"
         android:layout_toRightOf="@+id/details_label"/>
      
-     <Button
+    <Button
         android:id="@+id/Submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Event"
+        android:text="@string/add_event"
         android:layout_below="@+id/details_value"
-        android:onClick="generateEvent"/>
+        android:onClick="submitEvent"/>
+    
 </RelativeLayout>

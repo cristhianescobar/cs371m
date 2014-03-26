@@ -12,51 +12,45 @@ import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseException;
 
 import java.util.List;
 
 public class ListEvents extends ListActivity {
 
-	private static EventArrayAdapter eventList;
+	private static EventArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        eventList = new EventArrayAdapter(this);
+        adapter = new EventArrayAdapter(this);
         
         eventsFromParse();
         
-        
-        setListAdapter(eventList);		
+        setListAdapter(adapter);		
     }
     
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id)
     {
     	Intent intent = new Intent(this, EventDetail.class);
-    	Event request = (Event) eventList.getItem(position);
-    	intent.putExtra("id", request.getObjectId());
-    	startActivity(intent);
-    }
-    
-    public static Event getEvent (int position)
-    {
-    	assert (position < 0 || position > eventList.getCount() - 1);
-    	return (Event) eventList.getItem(position);
+    	Event event = (Event) adapter.getItem(position);
+		intent.putExtra("id", event.getId());
+		startActivity(intent);
     }
 
     private void eventsFromParse() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(AddEvent.EVENTS_TABLE);
-        query.findInBackground(new FindCallback<ParseObject>() {
-
-
+        ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
+        query.findInBackground(new FindCallback<Event>()
+        {
             @Override
-            public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
-                for (ParseObject comment : parseObjects) {
-                    
-                    eventList.add(new Event());
-                    Log.d("post", "retrieved a related post");
+            public void done(List<Event> results, ParseException e)
+            {
+                for (Event event : results)
+                {
+                    Log.d("ListEvent", "Found event id=" + event.getId());
+                	adapter.add(event);
                 }
             }
         });
