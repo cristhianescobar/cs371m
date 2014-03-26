@@ -5,7 +5,6 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
