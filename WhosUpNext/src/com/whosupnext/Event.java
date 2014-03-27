@@ -5,11 +5,6 @@ import java.util.Date;
 
 import com.parse.*;
 
-/**
- * Created by escobarcristhian18 on 3/21/14.
- */
-
-
 @ParseClassName("Event")
 public class Event extends ParseObject
 {

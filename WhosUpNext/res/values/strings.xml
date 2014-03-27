@@ -22,7 +22,9 @@
     <string name="location_label">Location: </string>
     <string name="details_label">Details: </string>
     <string name="phone_label">Phone Number: </string>
-    
+    <string name="email_label">Email: </string>
+    <string name="password_label">Password: </string>
+    <string name="submit">Submit</string>
     
 
 </resources>

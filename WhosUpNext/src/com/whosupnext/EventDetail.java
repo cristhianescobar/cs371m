@@ -50,6 +50,8 @@ public class EventDetail extends Activity
 				}
 			}
 		});
+		
+		
 	}
 	
 	public void displayData()

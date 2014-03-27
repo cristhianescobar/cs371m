@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     
-    android:gravity="center" >
+    android:gravity="center"
+    android:background="@color/orange">
     
      <TextView
         android:id="@+id/email_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email: " />
+        android:text="@string/email_label" />
     
      <EditText
         android:id="@+id/email_value"
@@ -22,7 +23,7 @@
         android:id="@+id/phone_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Phone Number: "
+        android:text="@string/phone_label"
         android:layout_below="@+id/email_value" />
      
      <EditText
@@ -37,7 +38,7 @@
         android:id="@+id/password_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Password: "
+        android:text="@string/password_label"
         android:layout_below="@+id/phone_value" />
      
      <EditText
@@ -52,7 +53,7 @@
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:text="@string/submit"
         android:layout_below="@+id/password_value"
         android:onClick="submit" />
          
