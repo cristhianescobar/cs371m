@@ -55,10 +55,5 @@ public class ListEvents extends ListActivity {
                 }
             }
         });
-
-
-
     }
-
-
 } 
