@@ -1,9 +1,5 @@
 package com.whosupnext;
 
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +7,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+
 public class SignIn extends Activity {
+
+    private static String  CLASS = "SingIn";
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,7 +38,7 @@ public class SignIn extends Activity {
 			    }
 				else
 				{
-					Log.e("SignIn", e.getMessage());
+					Log.e(CLASS, e.getMessage());
 					String msg = "";
 					if (e.getMessage().equals("invalid login credentials"))
 					{

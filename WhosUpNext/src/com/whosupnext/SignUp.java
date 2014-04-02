@@ -1,9 +1,5 @@
 package com.whosupnext;
 
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +7,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+
 public class SignUp extends Activity {
+
+    private static String  CLASS = "SignUp";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,7 +65,7 @@ public class SignUp extends Activity {
 				    }
 					else
 					{
-						Log.e("SignUp", e.getMessage());
+						Log.e(CLASS, e.getMessage());
 						String msg = "";
 						if (e.getMessage().substring(0, 13).equals("invalid email"))
 						{
@@ -83,7 +86,7 @@ public class SignUp extends Activity {
 		}
 		catch (Exception e)
 		{
-			Log.e("SignUp", e.getMessage());
+			Log.e(CLASS, e.getMessage());
 			String msg = "";
 			if (e.getMessage().substring(0, 11).equals("Invalid int"))
 			{

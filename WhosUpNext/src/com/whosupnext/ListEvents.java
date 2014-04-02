@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import java.util.List;
 

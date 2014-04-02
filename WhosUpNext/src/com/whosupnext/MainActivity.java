@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,10 +16,20 @@ import com.parse.ParseUser;
 public class MainActivity extends Activity {
 
 	private static boolean parseInit = false;
+    private static String  CLASS = "Main Activity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+
+        /*Animation Splash Screen*/
+
+
+
+        /*End Animation*/
+
+
 		setContentView(R.layout.activity_main);
 		
 		if (!parseInit)
@@ -108,16 +117,16 @@ public class MainActivity extends Activity {
 	
 	public void signOut (View v)
 	{
-		Log.d("Main", "signing out");
+		Log.d(CLASS, "signing out");
 		ParseUser.logOut();
-		Log.d("Main", "signed out");
+		Log.d(CLASS, "signed out");
 		assert(!checkUser());
 		
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		this.finish();
 		
-		Log.d("Main", "done");
+		Log.d(CLASS, "done");
 	}
 
 }
