@@ -32,26 +32,17 @@ public class EventDetail extends Activity
 		Log.d("EventDetail", "Details for event " + objectId);
 		
 		ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
-		query.getInBackground(objectId, new GetCallback<Event>()
+		try
 		{
-			public void done(Event event, ParseException e)
-			{
-				if (e == null)
-				{
-					Log.d("EventDetail", "Found Event " + (event != null));
-					
-					EventDetail.mEvent = event;
-					displayData();
-				}
-				else
-				{
-					Log.wtf("EventDetail", e.getMessage());
-					assert(false);
-				}
-			}
-		});
+			mEvent = query.get(objectId);
+		}
+		catch (Exception e)
+		{
+			Log.e("EventDetail", e.getMessage());
+			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+		}
 		
-		
+		displayData();
 	}
 	
 	public void displayData()
