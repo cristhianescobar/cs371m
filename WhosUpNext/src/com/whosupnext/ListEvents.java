@@ -13,6 +13,7 @@ import com.parse.ParseQuery;
 
 import java.util.List;
 
+
 public class ListEvents extends ListActivity {
 
 	private static EventArrayAdapter adapter;

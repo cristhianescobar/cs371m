@@ -8,6 +8,9 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -31,8 +34,10 @@ public class AddEvent extends Activity {
 	public static final String EVENTS_TABLE = "CreateEvent";
     private String ADD_EVENT = "AddEvent";
 	private static Date mDate;
-	
-	private ParseUser mUser;
+    private LocationManager locationManager;
+
+
+    private ParseUser mUser;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +72,21 @@ public class AddEvent extends Activity {
 			final Context context = this;
 			
 			final Event event = new Event();
-			event.setName(name.getText().toString());
+
+            // Acquire a reference to the system Location Manager
+//            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+//            LocationProvider locationProvider = LocationManager.NETWORK_PROVIDER;
+//            try{
+//                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                Log.d(ADD_EVENT, "HERE!!!!!!!!!!!!!!: "+ lastKnownLocation);
+//            }catch(Exception e){
+//
+//            }
+
+            event.setName(name.getText().toString());
 			event.setDate(mDate);
 			event.setSport(sport.getText().toString());
-			event.setLocation(new ParseGeoPoint(40.0, -30.0));
+			event.setLocation(new ParseGeoPoint(30.285084, -97.736064));
 			event.setDetails(details.getText().toString());
 			event.setHost(mUser);
 			event.saveInBackground(new SaveCallback()

@@ -85,7 +85,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/location_value"
         android:text="@string/details_label" />
-    
+
+
+
     <EditText
         android:id="@+id/details_value"
         android:layout_height="wrap_content"
@@ -102,5 +104,10 @@
         android:text="@string/add_event"
         android:layout_below="@+id/details_value"
         android:onClick="submitEvent"/>
-    
+
+    <fragment
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Submit"/>
 </RelativeLayout>

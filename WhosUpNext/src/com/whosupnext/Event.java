@@ -73,6 +73,8 @@ public class Event extends ParseObject
         if (location == null)
             throw new IllegalArgumentException("Missing Location");
         put(LOCATION, location);
+
+        
     }
 	
 	public ParseUser getHost() {

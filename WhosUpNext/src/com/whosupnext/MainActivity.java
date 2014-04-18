@@ -24,25 +24,29 @@ public class MainActivity extends Activity {
 
 
         /*Animation Splash Screen*/
-
-
+//
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.splash);
+//        ImageView image = (ImageView) findViewById(R.id.ImageView01);
+//        android.view.animation.Animation hyperspaceJump = AnimationUtils.loadAnimation(this, R.anim.hyperspace_jump);
+//        image.startAnimation(hyperspaceJump);
 
         /*End Animation*/
 
 
 		setContentView(R.layout.activity_main);
-		
+
 		if (!parseInit)
 		{
 			Log.d("MainActivity", "Initializing Parse");
 	        //Application ID AaxBmFVakIxhS7XajgFg8CveAlMxyX5zifrU00If
 	        //Client Key N9lPXcTEmixoJOkVNpxKb6CRpNoNkqP8LUetMvFv
-			
+
 			ParseObject.registerSubclass(Event.class);
 	        Parse.initialize(this, "AaxBmFVakIxhS7XajgFg8CveAlMxyX5zifrU00If", "N9lPXcTEmixoJOkVNpxKb6CRpNoNkqP8LUetMvFv");
 	        parseInit = true;
 		}
-		
+
         checkUser();
 	}
 	
