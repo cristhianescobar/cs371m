@@ -1,14 +1,13 @@
 package com.whosupnext;
 
-import java.util.Date;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import java.util.Date;
 
 
 public class EventArrayAdapter extends ArrayAdapter<Event>

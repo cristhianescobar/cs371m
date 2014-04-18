@@ -1,12 +1,5 @@
 package com.whosupnext;
 
-import java.util.Date;
-
-import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -25,10 +18,18 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.Date;
+
 @SuppressLint("ValidFragment")
 public class AddEvent extends Activity {
 
 	public static final String EVENTS_TABLE = "CreateEvent";
+    private String ADD_EVENT = "AddEvent";
 	private static Date mDate;
 	
 	private ParseUser mUser;
@@ -41,7 +42,7 @@ public class AddEvent extends Activity {
 		mUser = ParseUser.getCurrentUser();
 		if (mUser == null)
 		{
-			Log.wtf("AddEvent", "Must be logged in to add event!");
+			Log.wtf(ADD_EVENT, "Must be logged in to add event!");
 			assert(false);
 		}
 		
@@ -78,7 +79,7 @@ public class AddEvent extends Activity {
 				{
 					if (e == null)
 					{
-						Log.d("AddEvent", "Created event " + event.getId());
+						Log.d(ADD_EVENT, "Created event " + event.getId());
 						
 						Intent intent = new Intent(context, EventDetail.class);
 						intent.putExtra("id", event.getId());
@@ -87,7 +88,7 @@ public class AddEvent extends Activity {
 					}
 					else
 					{
-						Log.e("AddEvent", e.toString());
+						Log.e(ADD_EVENT, e.toString());
 						Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 					}
 				}
@@ -99,7 +100,7 @@ public class AddEvent extends Activity {
 		} 
 		catch (IllegalArgumentException e)
 		{
-			Log.e("AddEvent", e.toString());
+			Log.e(ADD_EVENT, e.toString());
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
