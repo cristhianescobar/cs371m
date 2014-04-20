@@ -42,7 +42,7 @@ public class AddEvent extends Activity {
 	public static final String EVENTS_TABLE = "CreateEvent";
     private String ADD_EVENT = "AddEvent";
 	private static Date mDate;
-	
+
 	private ParseUser mUser;
 	private LatLng mLocation;
 	
@@ -109,7 +109,8 @@ public class AddEvent extends Activity {
 			final Context context = this;
 			
 			final Event event = new Event();
-			event.setName(name.getText().toString());
+
+            event.setName(name.getText().toString());
 			event.setDate(mDate);
 			event.setSport(sport.getText().toString());
 			event.setLocation(mLocation);
