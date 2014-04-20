@@ -1,106 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    
-    android:gravity="center"
-    android:background="@color/orange">
-
-    <TextView
-        android:id="@+id/name_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/name_label" />
-    
-	<EditText
-        android:id="@+id/name_value"
-        android:layout_height="wrap_content"
-        android:inputType="textCapWords"
-        android:layout_width="fill_parent" 
-        android:layout_toRightOf="@+id/name_label"/>
-     
-    <TextView
-        android:id="@+id/date_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/name_value"
-        android:text="@string/date_label" />
-    
-    <Button
-        android:id="@+id/date_value"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent" 
-        android:onClick="showDatePickerDialog"
-        android:layout_below="@+id/name_value"
-        android:layout_toRightOf="@+id/date_label"/>
-     
-    <TextView
-        android:id="@+id/time_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/date_value"
-        android:text="@string/time_label" />
-    
-    <Button
-        android:id="@+id/time_value"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent" 
-        android:onClick="showTimePickerDialog"
-        android:layout_below="@+id/date_value"
-        android:layout_toRightOf="@+id/time_label"/>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_envet"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 	
-    <TextView
-        android:id="@+id/sport_label"
-        android:layout_width="wrap_content"
+    <TableRow
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/time_value"
-        android:text="@string/sport_label" />
-    
-    <EditText
-        android:id="@+id/sport_value"
+        android:padding="5dip" >
+        <TextView
+	        android:id="@+id/name_label"
+	        android:text="@string/name_label"
+	        android:gravity="right" />
+	    
+		<EditText
+	        android:id="@+id/name_value"
+	        android:layout_weight="1"
+	        android:inputType="textCapWords" />
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapWords"
-        android:layout_width="fill_parent" 
-        android:layout_below="@+id/time_value"
-        android:layout_toRightOf="@+id/sport_label"/>
-     
-    <TextView
-        android:id="@+id/location_label"
-        android:layout_width="wrap_content"
+        android:padding="5dip" >
+		<TextView
+	        android:id="@+id/date_label"
+	        android:text="@string/date_label"
+	        android:gravity="right" />
+	    
+	    <Button
+	        android:id="@+id/date_value"
+	        android:layout_weight="1"
+	        android:onClick="showDatePickerDialog"/>
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sport_value"
-        android:text="@string/location_label" />
-    
-    <EditText
-        android:id="@+id/location_value"
+        android:padding="5dip" >
+		<TextView
+	        android:id="@+id/time_label"
+	        android:text="@string/time_label"
+	        android:gravity="right" />
+	    
+	    <Button
+	        android:id="@+id/time_value"
+	        android:layout_weight="1"
+	        android:onClick="showTimePickerDialog"/>
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapWords"
-        android:layout_width="fill_parent" 
-        android:layout_below="@+id/sport_value"
-        android:layout_toRightOf="@+id/location_label"/>
-     
-    <TextView
-        android:id="@+id/details_label"
-        android:layout_width="wrap_content"
+        android:padding="5dip" >
+		<TextView
+	        android:id="@+id/sport_label"
+	        android:text="@string/sport_label"
+	        android:gravity="right" />
+	    
+	    <EditText
+	        android:id="@+id/sport_value"
+	        android:layout_weight="1"
+	        android:inputType="textCapWords" />
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/location_value"
-        android:text="@string/details_label" />
-    
-    <EditText
-        android:id="@+id/details_value"
+        android:padding="5dip" >
+		<TextView
+	        android:id="@+id/location_label"
+	        android:text="@string/location_label"
+	        android:gravity="right" />
+	    
+	    <EditText
+	        android:id="@+id/location_value"
+	        android:layout_weight="1"
+	        android:inputType="textCapWords" />
+	    <Button
+	        android:id="@+id/location_button"
+	        android:text="@string/update_map"
+	        android:onClick="updateMap"/>
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapSentences"
-        android:layout_width="fill_parent" 
-        android:singleLine="false"
-        android:layout_below="@+id/location_value"
-        android:layout_toRightOf="@+id/details_label"/>
-     
-    <Button
-        android:id="@+id/Submit"
-        android:layout_width="wrap_content"
+        android:padding="5dip"
+        android:layout_weight="2" >
+		<fragment
+	        android:id="@+id/location_map"
+		    class="com.google.android.gms.maps.MapFragment"
+	        android:layout_weight="1"
+            android:layout_column="1"/>
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_event"
-        android:layout_below="@+id/details_value"
-        android:onClick="submitEvent"/>
-    
-</RelativeLayout>
+        android:padding="5dip" >
+		<TextView
+	        android:id="@+id/details_label"
+	        android:text="@string/details_label"
+	        android:gravity="right" />
+	    
+	    <EditText
+	        android:id="@+id/details_value"
+	        android:layout_weight="1"
+	        android:inputType="textMultiLine"
+        	android:singleLine="false" />
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+	    android:gravity="center" >
+	    <Button
+	        android:id="@+id/Submit"
+	        android:text="@string/add_event"
+	        android:layout_span="2"
+	        android:onClick="submitEvent" />
+    </TableRow>
+</TableLayout>

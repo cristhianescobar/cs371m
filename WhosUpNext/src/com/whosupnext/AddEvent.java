@@ -8,6 +8,10 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -18,12 +22,19 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 @SuppressLint("ValidFragment")
 public class AddEvent extends Activity {
@@ -33,6 +44,7 @@ public class AddEvent extends Activity {
 	private static Date mDate;
 	
 	private ParseUser mUser;
+	private LatLng mLocation;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +58,14 @@ public class AddEvent extends Activity {
 			assert(false);
 		}
 		
+		LocationManager locMgr = ((LocationManager) getSystemService(LOCATION_SERVICE));
+        Location location = locMgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        mLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.location_map)).getMap();
+		map.addMarker(new MarkerOptions().position(mLocation));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(mLocation, 16));
+		
 		mDate = new Date();
 		
 		Button time = (Button) findViewById(R.id.time_value);
@@ -55,13 +75,35 @@ public class AddEvent extends Activity {
 		date.setText(parseDate(mDate));
 	}
 	
+	public void updateMap(View V)
+	{
+		String address = ((EditText) findViewById(R.id.location_value)).getText().toString();
+		
+		Geocoder geocoder = new Geocoder(this, Locale.US);
+		
+		try
+		{
+			Address location = geocoder.getFromLocationName(address, 1).get(0);
+			mLocation = new LatLng(location.getLatitude(), location.getLongitude());
+		}
+		catch (Exception e)
+		{
+			Log.e("AddEvent", e.getMessage());
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+		}
+		
+		
+		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.location_map)).getMap();
+		map.addMarker(new MarkerOptions().position(mLocation));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(mLocation, 16));
+	}
+	
 	public void submitEvent(View v)
 	{
 		try
 		{
 			EditText name = (EditText) findViewById(R.id.name_value);
 			EditText sport = (EditText) findViewById(R.id.sport_value);
-			EditText location = (EditText) findViewById(R.id.location_value);
 			EditText details = (EditText) findViewById(R.id.details_value);
 			
 			final Context context = this;
@@ -70,7 +112,7 @@ public class AddEvent extends Activity {
 			event.setName(name.getText().toString());
 			event.setDate(mDate);
 			event.setSport(sport.getText().toString());
-			event.setLocation(new ParseGeoPoint(40.0, -30.0));
+			event.setLocation(mLocation);
 			event.setDetails(details.getText().toString());
 			event.setHost(mUser);
 			event.saveInBackground(new SaveCallback()

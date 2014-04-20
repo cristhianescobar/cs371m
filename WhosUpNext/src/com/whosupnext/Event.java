@@ -1,6 +1,7 @@
 package com.whosupnext;
 
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -69,10 +70,10 @@ public class Event extends ParseObject
         return getParseGeoPoint(LOCATION);
     }
 	
-	public void setLocation(ParseGeoPoint location) throws IllegalArgumentException {
+	public void setLocation(LatLng location) throws IllegalArgumentException {
         if (location == null)
             throw new IllegalArgumentException("Missing Location");
-        put(LOCATION, location);
+        put(LOCATION, new ParseGeoPoint(location.latitude, location.longitude));
     }
 	
 	public ParseUser getHost() {

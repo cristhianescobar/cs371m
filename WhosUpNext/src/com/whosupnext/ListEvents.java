@@ -16,16 +16,18 @@ import java.util.List;
 public class ListEvents extends ListActivity {
 
 	private static EventArrayAdapter adapter;
+	private static loadingDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         adapter = new EventArrayAdapter(this);
+        mDialog = new loadingDialog(this);
         
         eventsFromParse();
         
-        setListAdapter(adapter);		
+        setListAdapter(adapter);
     }
     
     @Override
@@ -39,17 +41,26 @@ public class ListEvents extends ListActivity {
     }
 
     private void eventsFromParse() {
+    	mDialog.startLoading();
         ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
         query.findInBackground(new FindCallback<Event>()
         {
             @Override
             public void done(List<Event> results, ParseException e)
             {
-                for (Event event : results)
-                {
-                    Log.d("ListEvent", "Found event id=" + event.getId());
-                	adapter.add(event);
-                }
+            	if (e == null)
+            	{
+	                for (Event event : results)
+	                {
+	                    Log.d("ListEvent", "Found event id=" + event.getId());
+	                	adapter.add(event);
+	                }
+	                mDialog.stopLoading();
+            	}
+            	else
+            	{
+	                mDialog.stopLoading();
+            	}
             }
         });
     }
