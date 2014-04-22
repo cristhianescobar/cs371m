@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+	  android:paddingTop="@dimen/scroll_padding"
+	  android:paddingBottom="@dimen/scroll_padding" >
 	<LinearLayout
 	  android:orientation="vertical"
 	  android:layout_width="fill_parent"
@@ -22,7 +24,8 @@
 			<TextView
 			    android:id="@+id/name_value"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content" />
+			    android:layout_height="wrap_content"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -40,7 +43,8 @@
 			<TextView
 			    android:id="@+id/date_value"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content" />
+			    android:layout_height="wrap_content"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -58,7 +62,8 @@
 			<TextView
 			    android:id="@+id/time_value"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content" />
+			    android:layout_height="wrap_content"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -76,7 +81,8 @@
 			<TextView
 			    android:id="@+id/sport_value"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content" />
+			    android:layout_height="wrap_content"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -94,7 +100,8 @@
 			<TextView
 			    android:id="@+id/location_value"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content" />
+			    android:layout_height="wrap_content"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -126,7 +133,8 @@
 			<TextView
 			    android:id="@+id/details_value"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content" />
+			    android:layout_height="wrap_content"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -144,7 +152,8 @@
 			<TextView
 			    android:id="@+id/host_value"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content" />
+			    android:layout_height="wrap_content"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -162,7 +171,8 @@
 			<TextView
 			    android:id="@+id/phone_value"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content" />
+			    android:layout_height="wrap_content"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"

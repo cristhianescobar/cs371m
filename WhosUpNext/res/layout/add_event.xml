@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+	  android:paddingTop="@dimen/scroll_padding"
+	  android:paddingBottom="@dimen/scroll_padding" >
     <LinearLayout
 	  android:orientation="vertical"
 	  android:layout_width="fill_parent"
@@ -21,9 +23,10 @@
 		        android:paddingRight="@dimen/label_padding" />
 			<EditText
 		        android:id="@+id/name_value"
-			    android:layout_width="match_parent"
+			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
-		        android:inputType="textCapWords" />
+		        android:inputType="textCapWords|textAutoCorrect"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 		<LinearLayout
 	        android:layout_width="fill_parent"
@@ -78,9 +81,10 @@
 		        android:paddingRight="@dimen/label_padding" />
 			<EditText
 		        android:id="@+id/sport_value"
-			    android:layout_width="wrap_content"
+			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
-		        android:inputType="textCapWords" />
+		        android:inputType="textCapWords|textAutoCorrect"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -99,13 +103,14 @@
 		        android:id="@+id/location_value"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-		        android:inputType="textCapWords" />
+		        android:inputType="textCapWords|textPostalAddress|textAutoCorrect"
+		        android:layout_marginRight="@dimen/value_padding" />
 			<Button
 		        android:id="@+id/location_button"
 	        	android:text="@string/update_map"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-		        android:onClick="updateMap"/>
+		        android:onClick="updateMap" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -136,9 +141,10 @@
 		        android:paddingRight="@dimen/label_padding" />
 			<EditText
 		        android:id="@+id/details_value"
-			    android:layout_width="wrap_content"
+			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
-		        android:inputType="textMultiLine" />
+		        android:inputType="textCapSentences|textMultiLine|textAutoCorrect"
+		        android:layout_marginRight="@dimen/value_padding" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"

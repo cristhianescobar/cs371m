@@ -35,7 +35,6 @@ public class EventDetail extends Activity
 		
 		Intent intent = getIntent();
 		String objectId = intent.getStringExtra("id");
-		
 		Log.d("EventDetail", "Details for event " + objectId);
 		
 		ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
@@ -43,80 +42,84 @@ public class EventDetail extends Activity
 		try
 		{
 			mEvent = query.get(objectId);
+			displayData();
 		}
 		catch (Exception e)
 		{
-			Log.e("EventDetail", e.getMessage());
+			Log.e("EventDetail", "Getting Data: " + e.toString());
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 		}
-		
-		displayData();
 	}
 	
 	public void displayData()
 	{
-		((TextView) findViewById(R.id.name_value)).setText(mEvent.getName());
 		ParseUser host = mEvent.getHost();
+		Date date = mEvent.getDate();
+		LatLng location = mEvent.getLocation();
 		try
 		{
+			// Display Data
+			((TextView) findViewById(R.id.name_value)).setText(mEvent.getName());
 			((TextView) findViewById(R.id.host_value)).setText(host.fetchIfNeeded().getEmail());
 			((TextView) findViewById(R.id.phone_value)).setText(host.fetchIfNeeded().getNumber("phone").toString());
-		}
-		catch (ParseException e)
-		{
-			Log.wtf("EventDetail", e.getMessage());
-			assert(false);
-		}
-		Date date = mEvent.getDate();
-		
-		((TextView) findViewById(R.id.date_value)).setText(AddEvent.parseDate(date));
-		((TextView) findViewById(R.id.time_value)).setText(AddEvent.parseTime(date));
-		((TextView) findViewById(R.id.sport_value)).setText(mEvent.getSport());
-		((TextView) findViewById(R.id.location_value)).setText(parseAddress(mEvent.getLocation()));
-		((TextView) findViewById(R.id.details_value)).setText(mEvent.getDetails());
-		
-		Button delete = ((Button) findViewById(R.id.delete_event));
-		
-		ParseUser current = ParseUser.getCurrentUser();
-		if ((current == null) || (!host.getEmail().equals(current.getEmail())))
-		{
-			delete.setVisibility(View.GONE);
-		}
-		else
-		{
-			delete.setVisibility(View.VISIBLE);
-		}
-	}
-	
-	public void deleteEvent(View v)
-	{
-		mEvent.deleteInBackground();
-		finish();
-	}
-	
-	public String parseAddress(LatLng location){
-	Geocoder geocoder = new Geocoder(this, Locale.US);
-		String address = "";
-		try
-		{
-			Address tmp = geocoder.getFromLocation(location.latitude, location.longitude,1).get(0);
+			((TextView) findViewById(R.id.date_value)).setText(AddEvent.parseDate(date));
+			((TextView) findViewById(R.id.time_value)).setText(AddEvent.parseTime(date));
+			((TextView) findViewById(R.id.sport_value)).setText(mEvent.getSport());
+			((TextView) findViewById(R.id.details_value)).setText(mEvent.getDetails());
+			((TextView) findViewById(R.id.location_value)).setText(parseAddress(location));
 			
-			for(int i=0;i<tmp.getMaxAddressLineIndex();i++){
-				address += tmp.getAddressLine(i);
-			}
-			address = address.substring(0,address.length() -1);
-			
+
+			// Setup Map
 			GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.location_map)).getMap();
 			map.getUiSettings().setScrollGesturesEnabled(false);
 			map.addMarker(new MarkerOptions().position(location));
 	        map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
+			
+			// Choose whether or not 
+			Button delete = ((Button) findViewById(R.id.delete_event));
+			ParseUser current = ParseUser.getCurrentUser();
+			if ((current == null) || (!host.getEmail().equals(current.getEmail())))
+			{
+				delete.setVisibility(View.GONE);
+			}
+			else
+			{
+				delete.setVisibility(View.VISIBLE);
+			}
 		}
 		catch (Exception e)
 		{
-			Log.e("EventDetail", e.toString() );
-			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-			address= "Address not found\nLat: " + location.latitude + ", Log: " + location.longitude;
+			Log.e("EventDetail", "Display Data: " + e.toString());
+			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 		}
-		return address;
+	}
+	
+	// Gets string address from LatLng
+	public String parseAddress(LatLng location){
+		try
+		{
+			Geocoder geocoder = new Geocoder(this, Locale.US);
+			Address address = geocoder.getFromLocation(location.latitude, location.longitude,1).get(0);
+			
+			String output = address.getAddressLine(0);
+			for(int i = 1; i < address.getMaxAddressLineIndex(); ++i)
+			{
+				output += "\n" + address.getAddressLine(i);
+			}
+			return output;
+		}
+		catch (Exception e)
+		{
+			Log.e("EventDetail", "Parse Address: " + e.toString());
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+			return "Address not found\nLat: " + location.latitude + ", Log: " + location.longitude;
+		}
+	}
+	
+	// Called by Delete Button
+	public void deleteEvent(View v)
+	{
+		mEvent.deleteInBackground();
+		finish();
 	}
 }
