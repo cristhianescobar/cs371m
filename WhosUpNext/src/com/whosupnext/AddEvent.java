@@ -59,10 +59,9 @@ public class AddEvent extends Activity {
 		}
 		
 		LocationManager locMgr = ((LocationManager) getSystemService(LOCATION_SERVICE));
-        Location location = locMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);  //.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        Log.e("AddEvent", "Location: " + location);
+        Location location = locMgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         mLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
+        
 		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.location_map)).getMap();
 		map.addMarker(new MarkerOptions().position(mLocation));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(mLocation, 16));

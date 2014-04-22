@@ -63,9 +63,9 @@ public class EventDetail extends Activity
 			((TextView) findViewById(R.id.host_value)).setText(host.fetchIfNeeded().getEmail());
 			((TextView) findViewById(R.id.phone_value)).setText(host.fetchIfNeeded().getNumber("phone").toString());
 		}
-		catch (ParseException e1)
+		catch (ParseException e)
 		{
-			Log.wtf("EventDetail", e1.getMessage());
+			Log.wtf("EventDetail", e.getMessage());
 			assert(false);
 		}
 		Date date = mEvent.getDate();
@@ -113,7 +113,7 @@ public class EventDetail extends Activity
 		}
 		catch (Exception e)
 		{
-			Log.e("EventDetail", "parseAddress: " + e.getMessage());
+			Log.e("EventDetail", e.toString() );
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			address= "Address not found\nLat: " + location.latitude + ", Log: " + location.longitude;
 		}
