@@ -17,3 +17,4 @@ build/
 *ipr
 *iws
 settings.gradle
+WhosUpNext/libs/*

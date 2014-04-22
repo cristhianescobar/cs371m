@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 
@@ -46,7 +47,7 @@ public class MainActivity extends Activity {
 	        Parse.initialize(this, "AaxBmFVakIxhS7XajgFg8CveAlMxyX5zifrU00If", "N9lPXcTEmixoJOkVNpxKb6CRpNoNkqP8LUetMvFv");
 	        parseInit = true;
 		}
-
+		
         checkUser();
 	}
 	
@@ -131,6 +132,12 @@ public class MainActivity extends Activity {
 		this.finish();
 		
 		Log.d(CLASS, "done");
+	}
+	
+	public void clearCache (View v)
+	{
+		Log.d("MainActivity", "Clearing Cache");
+		ParseQuery.clearAllCachedResults();
 	}
 
 }

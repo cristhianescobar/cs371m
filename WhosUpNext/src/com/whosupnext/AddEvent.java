@@ -59,7 +59,8 @@ public class AddEvent extends Activity {
 		}
 		
 		LocationManager locMgr = ((LocationManager) getSystemService(LOCATION_SERVICE));
-        Location location = locMgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        Location location = locMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);  //.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        Log.e("AddEvent", "Location: " + location);
         mLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
 		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.location_map)).getMap();

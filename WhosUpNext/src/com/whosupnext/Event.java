@@ -66,8 +66,9 @@ public class Event extends ParseObject
         put(DETAILS, details);
     }
 	
-	public ParseGeoPoint getLocation(){
-        return getParseGeoPoint(LOCATION);
+	public LatLng getLocation(){
+		ParseGeoPoint temp = getParseGeoPoint(LOCATION);
+		return new LatLng (temp.getLatitude(), temp.getLongitude());
     }
 	
 	public void setLocation(LatLng location) throws IllegalArgumentException {
