@@ -51,19 +51,20 @@ public class EventDetail extends Activity
 		}
 	}
 	
-	public void displayData()
+	private void displayData()
 	{
-		ParseUser host = mEvent.getHost();
-		Date date = mEvent.getDate();
-		LatLng location = mEvent.getLocation();
 		try
 		{
+			ParseUser host = mEvent.getHost();
+			Date date = mEvent.getDate();
+			LatLng location = mEvent.getLocation();
+			
 			// Display Data
 			((TextView) findViewById(R.id.name_value)).setText(mEvent.getName());
 			((TextView) findViewById(R.id.host_value)).setText(host.fetchIfNeeded().getEmail());
 			((TextView) findViewById(R.id.phone_value)).setText(host.fetchIfNeeded().getNumber("phone").toString());
-			((TextView) findViewById(R.id.date_value)).setText(AddEvent.parseDate(date));
-			((TextView) findViewById(R.id.time_value)).setText(AddEvent.parseTime(date));
+			((TextView) findViewById(R.id.date_value)).setText(DateTimeParser.date(date));
+			((TextView) findViewById(R.id.time_value)).setText(DateTimeParser.time(date));
 			((TextView) findViewById(R.id.sport_value)).setText(mEvent.getSport());
 			((TextView) findViewById(R.id.details_value)).setText(mEvent.getDetails());
 			((TextView) findViewById(R.id.location_value)).setText(parseAddress(location));
@@ -76,7 +77,7 @@ public class EventDetail extends Activity
 	        map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
 			
 			// Choose whether or not 
-			Button delete = ((Button) findViewById(R.id.delete_event));
+			Button delete = ((Button) findViewById(R.id.delete_button));
 			ParseUser current = ParseUser.getCurrentUser();
 			if ((current == null) || (!host.getEmail().equals(current.getEmail())))
 			{
@@ -95,10 +96,10 @@ public class EventDetail extends Activity
 	}
 	
 	// Gets string address from LatLng
-	public String parseAddress(LatLng location){
+	private String parseAddress(LatLng location){
 		try
 		{
-			Geocoder geocoder = new Geocoder(this, Locale.US);
+			Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.US);
 			Address address = geocoder.getFromLocation(location.latitude, location.longitude,1).get(0);
 			
 			String output = address.getAddressLine(0);
@@ -111,7 +112,7 @@ public class EventDetail extends Activity
 		catch (Exception e)
 		{
 			Log.e("EventDetail", "Parse Address: " + e.toString());
-			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 			return "Address not found\nLat: " + location.latitude + ", Log: " + location.longitude;
 		}
 	}

@@ -28,5 +28,13 @@
 		<item name="android:shadowDy" >1</item>
 		<item name="android:shadowRadius" >2</item>
 	 </style>
+	 
+	 <style name="label">
+		<item name="android:layout_width" >wrap_content</item>
+		<item name="android:layout_height" >fill_parent</item>
+		<item name="android:width" >@dimen/label_width</item>
+		<item name="android:gravity" >right|center_vertical</item>
+		<item name="android:paddingRight" >@dimen/label_padding</item>
+	 </style>
 
 </resources>

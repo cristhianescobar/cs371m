@@ -24,7 +24,7 @@ public class ListEvents extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        mAdapter = new EventArrayAdapter(this);
+        mAdapter = new EventArrayAdapter(getApplicationContext());
         
         Intent intent = getIntent();
 		switch (intent.getIntExtra("id", 0))
@@ -40,7 +40,7 @@ public class ListEvents extends ListActivity {
     {
     	Event event = (Event) mAdapter.getItem(position);
     	
-    	Intent intent = new Intent(this, EventDetail.class);
+    	Intent intent = new Intent(getApplicationContext(), EventDetail.class);
 		intent.putExtra("id", event.getId());
 		
 		startActivity(intent);

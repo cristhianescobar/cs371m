@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-	  android:paddingTop="@dimen/scroll_padding"
-	  android:paddingBottom="@dimen/scroll_padding" >
+    android:layout_height="fill_parent" >
     <LinearLayout
 	  android:orientation="vertical"
 	  android:layout_width="fill_parent"
-	  android:layout_height="wrap_content" >
+	  android:layout_height="wrap_content"
+	  android:paddingTop="@dimen/scroll_padding"
+	  android:paddingBottom="@dimen/scroll_padding" >
 		<LinearLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
@@ -16,11 +16,7 @@
 	        <TextView
 		        android:id="@+id/name_label"
 		        android:text="@string/name_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-	            android:width="@dimen/label_width"
-		        android:gravity="right"
-		        android:paddingRight="@dimen/label_padding" />
+		        style="@style/label" />
 			<EditText
 		        android:id="@+id/name_value"
 			    android:layout_width="fill_parent"
@@ -36,16 +32,13 @@
 	        <TextView
 		        android:id="@+id/date_label"
 		        android:text="@string/date_label"
+		        style="@style/label" />
+	        <DatePicker
+		        android:id="@+id/date_value"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-	            android:width="@dimen/label_width"
-		        android:gravity="right"
+		        android:calendarViewShown="false"
 		        android:paddingRight="@dimen/label_padding" />
-			<Button
-		        android:id="@+id/date_value"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-		        android:onClick="showDatePickerDialog"/>
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -55,16 +48,12 @@
 	        <TextView
 		        android:id="@+id/time_label"
 		        android:text="@string/time_label"
+		        style="@style/label" />
+	        <TimePicker
+		        android:id="@+id/time_value"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-	            android:width="@dimen/label_width"
-		        android:gravity="right"
 		        android:paddingRight="@dimen/label_padding" />
-			<Button
-		        android:id="@+id/time_value"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-		        android:onClick="showTimePickerDialog"/>
 	    </LinearLayout>
 		<LinearLayout
 	        android:layout_width="fill_parent"
@@ -74,11 +63,7 @@
 	        <TextView
 		        android:id="@+id/sport_label"
 		        android:text="@string/sport_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-	            android:width="@dimen/label_width"
-		        android:gravity="right"
-		        android:paddingRight="@dimen/label_padding" />
+		        style="@style/label" />
 			<EditText
 		        android:id="@+id/sport_value"
 			    android:layout_width="fill_parent"
@@ -94,23 +79,13 @@
 	        <TextView
 		        android:id="@+id/location_label"
 		        android:text="@string/location_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-	            android:width="@dimen/label_width"
-		        android:gravity="right"
-		        android:paddingRight="@dimen/label_padding" />
+		        style="@style/label" />
 			<EditText
 		        android:id="@+id/location_value"
-			    android:layout_width="wrap_content"
+			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 		        android:inputType="textCapWords|textPostalAddress|textAutoCorrect"
 		        android:layout_marginRight="@dimen/value_padding" />
-			<Button
-		        android:id="@+id/location_button"
-	        	android:text="@string/update_map"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-		        android:onClick="updateMap" />
 	    </LinearLayout>
 	    <LinearLayout
 	        android:layout_width="fill_parent"
@@ -134,11 +109,7 @@
 	        <TextView
 		        android:id="@+id/details_label"
 		        android:text="@string/details_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-	            android:width="@dimen/label_width"
-		        android:gravity="right"
-		        android:paddingRight="@dimen/label_padding" />
+		        style="@style/label" />
 			<EditText
 		        android:id="@+id/details_value"
 			    android:layout_width="fill_parent"
@@ -153,7 +124,7 @@
 	        android:padding="5dp"
 		    android:gravity="center" >
 		    <Button
-		        android:id="@+id/Submit"
+		        android:id="@+id/submit_button"
 		        android:text="@string/add_event"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"

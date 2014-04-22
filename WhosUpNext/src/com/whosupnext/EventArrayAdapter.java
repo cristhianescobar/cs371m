@@ -36,7 +36,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>
 		
 		Date date = e.getDate();
 		TextView time = (TextView) v.findViewById(R.id.itemDate);
-		time.setText(AddEvent.parseDate(date) + ", " + AddEvent.parseTime(date));
+		time.setText(DateTimeParser.date(date) + ", " + DateTimeParser.time(date));
 		
 		return v	;
 	}
