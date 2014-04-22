@@ -1,10 +1,13 @@
 package com.whosupnext;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,19 +25,6 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-
-        /*Animation Splash Screen*/
-//
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.splash);
-//        ImageView image = (ImageView) findViewById(R.id.ImageView01);
-//        android.view.animation.Animation hyperspaceJump = AnimationUtils.loadAnimation(this, R.anim.hyperspace_jump);
-//        image.startAnimation(hyperspaceJump);
-
-        /*End Animation*/
-
-
 		setContentView(R.layout.activity_main);
 
 		if (!parseInit)
@@ -58,6 +48,21 @@ public class MainActivity extends Activity {
 		checkUser();
 	}
 	
+	public static class PlaceholderFragment extends Fragment
+	{
+
+		public PlaceholderFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_main, container,
+					false);
+			return rootView;
+		}
+	}
+	
 	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,6 +71,22 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	*/
+	
+	/*
+	 * 
+	 * Nearby Events
+	 * Upcoming Events
+	 * My Events
+	 * New Event
+	 * -----
+	 * Sign In
+	 * Sign Up
+	 * Sign Out
+	 * -----
+	 * About
+	 * Settings
+	 * 
+	 */
 	
 	public boolean checkUser ()
 	{

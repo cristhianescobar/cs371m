@@ -13,7 +13,9 @@
     <string name="submit">Submit</string>
     <string name="update_map">Update</string>
     
-    
+    <!-- Other -->
+    <string name="current_location">Current Location</string>
+        
     <!-- Labels -->
     <string name="name_label"><b>Name:</b></string>
     <string name="host_label"><b>Host:</b></string>
