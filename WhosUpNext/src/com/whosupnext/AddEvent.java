@@ -63,6 +63,7 @@ public class AddEvent extends Activity {
         mLocation = new LatLng(location.getLatitude(), location.getLongitude());
         
 		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.location_map)).getMap();
+		map.getUiSettings().setScrollGesturesEnabled(false);
 		map.addMarker(new MarkerOptions().position(mLocation));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(mLocation, 16));
 		

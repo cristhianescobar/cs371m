@@ -10,20 +10,20 @@
     <string name="sign_out">Sign Out</string>
     <string name="delete">Delete</string>
     <string name="action_settings">Settings</string>
-    
-    <!-- Labels -->
-    <string name="name_label"><i>Name:</i></string>
-    <string name="host_label"><b>Host:</b></string>
-    <string name="date_label">Date: </string>
-    <string name="time_label">Time: </string>
-    <string name="sport_label">Sport: </string>
-    <string name="location_label">Location: </string>
-    <string name="details_label">Details: </string>
-    <string name="phone_label">Phone: </string>
-    <string name="email_label">Email: </string>
-    <string name="password_label">Password: </string>
     <string name="submit">Submit</string>
     <string name="update_map">Update</string>
     
+    
+    <!-- Labels -->
+    <string name="name_label"><b>Name:</b></string>
+    <string name="host_label"><b>Host:</b></string>
+    <string name="date_label"><b>Date:</b></string>
+    <string name="time_label"><b>Time:</b></string>
+    <string name="sport_label"><b>Sport:</b></string>
+    <string name="location_label"><b>Location:</b></string>
+    <string name="details_label"><b>Details:</b></string>
+    <string name="phone_label"><b>Phone:</b></string>
+    <string name="email_label"><b>Email:</b></string>
+    <string name="password_label"><b>Password:</b></string>
 
 </resources>

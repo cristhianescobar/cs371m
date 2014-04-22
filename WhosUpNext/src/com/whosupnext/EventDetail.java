@@ -33,7 +33,6 @@ public class EventDetail extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_detail);
 		
-		
 		Intent intent = getIntent();
 		String objectId = intent.getStringExtra("id");
 		
@@ -103,11 +102,12 @@ public class EventDetail extends Activity
 			Address tmp = geocoder.getFromLocation(location.latitude, location.longitude,1).get(0);
 			
 			for(int i=0;i<tmp.getMaxAddressLineIndex();i++){
-				address += tmp.getAddressLine(i) + "\n";
+				address += tmp.getAddressLine(i);
 			}
 			address = address.substring(0,address.length() -1);
 			
 			GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.location_map)).getMap();
+			map.getUiSettings().setScrollGesturesEnabled(false);
 			map.addMarker(new MarkerOptions().position(location));
 	        map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
 		}
