@@ -2,7 +2,10 @@ package com.whosupnext;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -14,9 +17,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -25,8 +31,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
 
@@ -36,12 +44,16 @@ public class AddEvent extends Activity
 	private ParseUser mUser;
 	private Event mEvent;
 	private LatLng mLocation;
+	private Context mContext;
+	private ProgressDialog mDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_event);
+		
+		mContext = this;
 
 		mUser = ParseUser.getCurrentUser();
 		if (mUser == null)
@@ -51,6 +63,8 @@ public class AddEvent extends Activity
 		}
 		
 		mEvent = new Event();
+		
+		// Initial map setup
 		try
 		{
 			// Get current location
@@ -58,7 +72,7 @@ public class AddEvent extends Activity
 	        Location location = locMgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 	        LatLng address = new LatLng(location.getLatitude(), location.getLongitude());
 	        
-	        // Set up map
+	        // Setup map
 			GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.location_map)).getMap();
 			map.getUiSettings().setScrollGesturesEnabled(false);
 			map.addMarker(new MarkerOptions().position(address));
@@ -69,10 +83,14 @@ public class AddEvent extends Activity
 		catch (Exception e)
 		{
 			Log.e("AddEvent", "Display Map: " + e.toString());
-			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(mContext, "Error loading maps.", Toast.LENGTH_SHORT).show();
 			
 			mLocation = new LatLng(0, 0);
 		}
+		
+		// Set min date and time
+		DatePicker date = (DatePicker) findViewById(R.id.date_value);
+		date.setMinDate(System.currentTimeMillis() - 60000);
 		
 		// Create an TextChangedListener and OnFocusChange to update map
 		EditText location = (EditText) findViewById(R.id.location_value);
@@ -82,7 +100,7 @@ public class AddEvent extends Activity
 			@Override
 			public void afterTextChanged(Editable s)
 			{
-				if (s.charAt(s.length() - 1) == ' ')
+				if (s.length() > 0 && s.charAt(s.length() - 1) == ' ')
 	        	{
 					updateMap();
 	        	}
@@ -106,6 +124,9 @@ public class AddEvent extends Activity
 				}
 			}
 		});
+		
+		// Hide keyboard
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 	
 	// Updates the map
@@ -114,7 +135,7 @@ public class AddEvent extends Activity
 		try
 		{
     		EditText location = (EditText) findViewById(R.id.location_value);
-    		Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.US);
+    		Geocoder geocoder = new Geocoder(mContext, Locale.US);
     		Address address = geocoder.getFromLocationName(location.getText().toString(), 1).get(0);
     		mLocation = new LatLng(address.getLatitude(), address.getLongitude());
 
@@ -127,25 +148,40 @@ public class AddEvent extends Activity
 		{
 			Log.e("AddEvent", "No Valid Address Found");
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
         	Log.e("AddEvent", "TextChangeListener: " + e.toString());
-			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(mContext, "Error updating maps.", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
 	// Stuff all data in mEvent
-	public void submitEvent(View v)
+	@SuppressLint("CutPasteId")
+	public void submit(View v)
 	{
+		TextView name_label = (TextView) findViewById(R.id.name_label);
+		TextView sport_label = (TextView) findViewById(R.id.sport_label);
+		EditText name_value = (EditText) findViewById(R.id.name_value);
+		EditText sport_value = (EditText) findViewById(R.id.sport_value);
+		EditText details_value = (EditText) findViewById(R.id.details_value);
+		DatePicker date = (DatePicker) findViewById(R.id.date_value);
+		TimePicker time = (TimePicker) findViewById(R.id.time_value);
+		Button submit = ((Button) findViewById(R.id.submit_button));
+		
 		try
-		{			
+		{	
+			// Hide keyboard
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(submit.getWindowToken(), 0);
+			
+			// Set label to black
+			name_label.setTextColor(Color.BLACK);
+			sport_label.setTextColor(Color.BLACK);
+			
 			// Name
-			EditText name = (EditText) findViewById(R.id.name_value);
-			mEvent.setName(name.getText().toString());
+			mEvent.setName(name_value.getText().toString());
 			
 			// Date/Time
-			DatePicker date = (DatePicker) findViewById(R.id.date_value);
-			TimePicker time = (TimePicker) findViewById(R.id.time_value);
 			mEvent.setDate(new Date(date.getYear() - 1900,
 								   date.getMonth(),
 								   date.getDayOfMonth(), 
@@ -153,36 +189,53 @@ public class AddEvent extends Activity
 					               time.getCurrentMinute()));
 			
 			// Sport
-			EditText sport = (EditText) findViewById(R.id.sport_value);
-			mEvent.setSport(sport.getText().toString());
+			mEvent.setSport(sport_value.getText().toString());
 			
 			// Location
 			mEvent.setLocation(mLocation);
 			
 			// Details
-			EditText details = (EditText) findViewById(R.id.details_value);
-			mEvent.setDetails(details.getText().toString());
+			mEvent.setDetails(details_value.getText().toString());
 			
 			// Host
 			mEvent.setHost(mUser);
 			
+			// Set Submit Button to unclickable
+			submit.setClickable(false);
+			
+			// Start Dialog
+			mDialog = new ProgressDialog(mContext);
+			mDialog.setMessage("Creating Event...");
+			mDialog.setIndeterminate(true);
+			mDialog.setCancelable(false);
+			mDialog.show();
+			
 			// Run Save in AsyncTask
 			new saveEvent().execute();
-			
-			// Set Submit Button to unclickable
-			Button submit = ((Button) findViewById(R.id.submit_button));
-			submit.setClickable(false);
 		} 
 		catch (IllegalArgumentException e)
 		{
-			Log.e("AddEvent", e.toString());
-			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+			if (sport_value.getText().toString().isEmpty())
+			{
+				sport_label.setTextColor(Color.RED);
+				sport_value.requestFocus();
+			}
+			
+			if (name_value.getText().toString().isEmpty())
+			{
+				name_label.setTextColor(Color.RED);
+				name_value.requestFocus();
+			}
+			
+			Log.e("AddEvent", "Submit: " + e.toString());
+			Toast.makeText(mContext, "Fill all required fields.", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
 	// Saves Event in AsyncTask
 	private class saveEvent extends AsyncTask<Void, Void, Void>
     {
+		String msg = "";
 		@Override
 		protected Void doInBackground(Void... params)
 		{
@@ -190,20 +243,48 @@ public class AddEvent extends Activity
 	        {
 				mEvent.save();
 			}
-	        catch (Exception e)
+	        catch (ParseException e)
 	        {
-	        	Log.e("AddEvent", "Save Event: " + e.toString());
-				Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+	        	Log.e("SignIn", "SignIn: " + e.toString());
+	        	switch (e.getCode())
+	        	{
+	        		case 100:
+	        			msg = "Check network connection.";
+	        			break;
+	        		default:
+	        			msg = "An unknown problem has occured (" + e.getCode() + ").";
+	        			break;
+	        	}
 			}
 			return null;
 		}
 		
 		protected void onPostExecute (Void result)
 		{
-			Intent intent = new Intent(getApplicationContext(), EventDetail.class);
-			intent.putExtra("id", mEvent.getId());
-			startActivity(intent);
-			finish();
+			if (mDialog != null)
+			{
+				mDialog.dismiss();
+			}
+			
+			if (msg.isEmpty())
+			{
+				Toast.makeText(mContext, "Event created.", Toast.LENGTH_SHORT).show();
+				
+				// Start Event Detail with id of new event
+				Intent intent = new Intent(mContext, EventDetail.class);
+				intent.putExtra("id", mEvent.getId());
+				startActivity(intent);
+				finish();
+			}
+			else
+			{
+				Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+				
+				// Set button clickable
+	        	Button submit = ((Button) findViewById(R.id.submit_button));
+				submit.setClickable(true);
+			}
+			
 		}
     }
 }

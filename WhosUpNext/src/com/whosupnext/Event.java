@@ -34,7 +34,7 @@ public class Event extends ParseObject
 	
 	public void setName(String name) throws IllegalArgumentException {
         if (name == null || name.equals(""))
-            throw new IllegalArgumentException("Missing Event");
+            throw new IllegalArgumentException("Missing 'name' value");
         put(NAME, name);
     }
 	
@@ -44,7 +44,7 @@ public class Event extends ParseObject
 	
 	public void setDate(Date date) throws IllegalArgumentException {
         if (date == null)
-            throw new IllegalArgumentException("Missing Date");
+            throw new IllegalArgumentException("Missing 'date' value");
         put(DATE, date);
     }
 	
@@ -54,7 +54,7 @@ public class Event extends ParseObject
 	
 	public void setSport(String sport) throws IllegalArgumentException {
         if (sport == null || sport.equals(""))
-            throw new IllegalArgumentException("Missing Sport");
+            throw new IllegalArgumentException("Missing 'sport' value");
         put(SPORT, sport);
     }
 	
@@ -73,7 +73,7 @@ public class Event extends ParseObject
 	
 	public void setLocation(LatLng location) throws IllegalArgumentException {
         if (location == null)
-            throw new IllegalArgumentException("Missing Location");
+            throw new IllegalArgumentException("Missing 'location' value");
         put(LOCATION, new ParseGeoPoint(location.latitude, location.longitude));
     }
 	
@@ -83,7 +83,7 @@ public class Event extends ParseObject
 	
 	public void setHost(ParseUser host) throws IllegalArgumentException {
         if (host == null)
-            throw new IllegalArgumentException("Missing Host");
+            throw new IllegalArgumentException("Missing 'host' value");
         put(HOST, host);
     }
 }

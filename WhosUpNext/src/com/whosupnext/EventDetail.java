@@ -96,7 +96,8 @@ public class EventDetail extends Activity
 	}
 	
 	// Gets string address from LatLng
-	private String parseAddress(LatLng location){
+	private String parseAddress(LatLng location)
+	{
 		try
 		{
 			Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.US);
@@ -121,6 +122,7 @@ public class EventDetail extends Activity
 	public void deleteEvent(View v)
 	{
 		mEvent.deleteInBackground();
+		Toast.makeText(getApplicationContext(), "Event deleted.", Toast.LENGTH_SHORT).show();
 		finish();
 	}
 }
