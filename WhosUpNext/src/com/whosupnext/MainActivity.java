@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 
 	private static boolean parseInit = false;
     private static String  CLASS = "Main Activity";
-    private final String [] MENU = {"Nearby Events","Upcoming Events", "My Events", "New Event", "Sign In","Sign Up","Sign Out","Settings", "About"};
+    private final String [] MENU = {"Nearby Events","Upcoming Events", "My Events", "New Event", "Sign In","Sign Up","Sign Out","Settings", "About","Update Data"};
     
     ListView listView ;
     
@@ -55,9 +55,40 @@ public class MainActivity extends Activity {
                // ListView Clicked item index
                int itemPosition     = position;
                
+               switch(itemPosition)
+               {
+               		case 0:
+               			listEvents(null);
+               			break;
+               		case 1:
+               			
+               			break;
+               		case 2:
+               			break;
+               		case 3:
+               			addEvent(null);
+               			break;
+               		case 4:
+               			signIn (null);
+               			break;
+               		case 5:
+               			signUp (null);
+               			break;
+               		case 6:
+               			signOut (null);
+               			break;
+               		case 7:
+               			break;
+               		case 8:
+               			break;
+               		default:
+               			clearCache(null);
+               			break;
+               }
                // ListView Clicked item value
                String  itemValue    = (String) listView.getItemAtPosition(position);
-                  
+               
+               
                 // Show Alert 
                 Toast.makeText(getApplicationContext(),
                   "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
@@ -97,8 +128,8 @@ public class MainActivity extends Activity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.main_fragment, container,
-					false);
+//			View rootView = inflater.inflate(R.layout.main_fragment, container,false);
+			View rootView = inflater.inflate(R.layout.main_fragment, container,false);
 			return rootView;
 		}
 	}
