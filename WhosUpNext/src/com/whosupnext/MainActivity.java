@@ -2,14 +2,20 @@ package com.whosupnext;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -17,16 +23,50 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity
+{
+	private static String  CLASS = "Main Activity";
+	
+	private static final String [] MENU = {"Nearby Events","Upcoming Events", "My Events", "New Event", "Sign In","Sign Up","Sign Out","Settings", "About"};
+	private static Context mContext;
 	private static boolean parseInit = false;
-    private static String  CLASS = "Main Activity";
+	private static ListView listView ;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
+		mContext = this;
+		
+		//ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, MENU);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.menu_item, R.id.menu_item_id, MENU);
+		
+		// Get ListView object from xml
+		listView = (ListView) findViewById(R.id.left_drawer);
+		listView.setAdapter(adapter); 
+		listView.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+				// ListView Clicked item index
+				int itemPosition     = position;
+				
+				// ListView Clicked item value
+				String  itemValue    = (String) listView.getItemAtPosition(position);
+				
+				// Show Alert 
+				Toast.makeText(getApplicationContext(),"Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG).show();
+				
+				
+				
+				
+				
+			}
+		}); 
+		
 		if (!parseInit)
 		{
 			Log.d("MainActivity", "Initializing Parse");
@@ -109,7 +149,7 @@ public class MainActivity extends Activity {
         }
         else
         {
-            welcome.setText("Welcome " + currentUser.getUsername() + "!");
+            welcome.setText("Welcome " + currentUser.getString("name") + "!");
             sign_in.setVisibility(View.GONE);
             sign_up.setVisibility(View.GONE);
             add_event.setVisibility(View.VISIBLE);
@@ -155,11 +195,4 @@ public class MainActivity extends Activity {
 		
 		Log.d(CLASS, "done");
 	}
-	
-	public void clearCache (View v)
-	{
-		Log.d("MainActivity", "Clearing Cache");
-		ParseQuery.clearAllCachedResults();
-	}
-
 }

@@ -47,6 +47,11 @@ public class EventDetail extends Activity
 		mContext = this;
 		
     	mUser = ParseUser.getCurrentUser();
+    	
+    	Button delete = ((Button) findViewById(R.id.delete_button));
+		Button attend = ((Button) findViewById(R.id.attend_button));
+		attend.setVisibility(View.GONE);
+		delete.setVisibility(View.GONE);
 		
 		// Start Dialog
 		mDialog = new ProgressDialog(mContext);
@@ -85,22 +90,27 @@ public class EventDetail extends Activity
 	        map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
 	        
 			// Choose which button(s) to show
-			Button attend = ((Button) findViewById(R.id.delete_button));
-			Button delete = ((Button) findViewById(R.id.attend_button));
-			if (mUser == null || mGuests.contains(mUser))
+			Button delete = ((Button) findViewById(R.id.delete_button));
+			Button attend = ((Button) findViewById(R.id.attend_button));
+			if (mUser != null)
 			{
-				attend.setVisibility(View.GONE);
-				delete.setVisibility(View.GONE);
-			}
-			else if (mUser.getObjectId().equals(host.getObjectId()))
-			{
-				attend.setVisibility(View.VISIBLE);
-				delete.setVisibility(View.GONE);
-			}
-			else
-			{
-				attend.setVisibility(View.GONE);
-				delete.setVisibility(View.VISIBLE);
+				if (mUser.getObjectId().equals(host.getObjectId()))
+				{
+					delete.setVisibility(View.VISIBLE);
+				}
+				else
+				{
+					boolean attending = false;
+					for (ParseObject guest : mGuests)
+					{
+						if (mUser.getObjectId().equals(guest.getObjectId()))
+							attending = true;
+					}
+					if (!attending)
+					{
+						attend.setVisibility(View.VISIBLE);
+					}
+				}
 			}
 		}
 		catch (Exception e)
@@ -155,7 +165,7 @@ public class EventDetail extends Activity
 	// Called by Attend Button
 	public void attendEvent(View v)
 	{
-		if ((mUser == null) || (mUser.equals(mEvent.getHost()) || mGuests.contains(mUser)))
+		if ((mUser == null) || (mUser.getObjectId().equals(mEvent.getHost().getObjectId())))
 		{
 			Log.wtf("EventDetail", "attendEvent: User is host or null");
 			assert(false);
@@ -164,8 +174,6 @@ public class EventDetail extends Activity
 		ParseRelation<ParseUser> relation = mEvent.getRelation("guests");
 		relation.add(mUser);
 		
-		mEvent.saveInBackground();
-		
 		// Start Dialog
 		mDialog = new ProgressDialog(mContext);
 		mDialog.setMessage("Loading data...");
@@ -173,8 +181,39 @@ public class EventDetail extends Activity
 		mDialog.setCancelable(false);
 		mDialog.show();
 		
-		// Load Data in AsyncTask
-		new loadData().execute();
+		Button attend = ((Button) findViewById(R.id.attend_button));
+		try
+		{
+			attend.setVisibility(View.GONE);
+			
+			mEvent.save();
+			
+			// Load Data in AsyncTask
+			new loadData().execute();
+		}
+		catch (ParseException e)
+		{
+			if (mDialog != null)
+			{
+				mDialog.dismiss();
+			}
+			
+			attend.setVisibility(View.VISIBLE);
+			
+			Log.e("EventDetail", "loadData: " + e.toString());
+			String msg = "";
+			switch (e.getCode())
+        	{
+        		case 100:
+        		case 120:
+        			msg = "Check network connection.";
+        			break;
+        		default:
+        			msg = "An unknown problem has occured (" + e.getCode() + ").";
+        			break;
+        	}
+			Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	// Called by Delete Button
@@ -208,10 +247,11 @@ public class EventDetail extends Activity
 			}
 	        catch (ParseException e)
 	        {
-	        	Log.e("SignIn", "SignIn: " + e.toString());
+	        	Log.e("EventDetail", "loadData: " + e.toString());
 	        	switch (e.getCode())
 	        	{
 	        		case 100:
+	        		case 120:
 	        			msg = "Check network connection.";
 	        			break;
 	        		default:
