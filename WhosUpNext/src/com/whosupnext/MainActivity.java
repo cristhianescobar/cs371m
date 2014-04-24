@@ -8,8 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -21,12 +26,47 @@ public class MainActivity extends Activity {
 
 	private static boolean parseInit = false;
     private static String  CLASS = "Main Activity";
-	
+    private final String [] MENU = {"Nearby Events","Upcoming Events", "My Events", "New Event", "Sign In","Sign Up","Sign Out","Settings", "About"};
+    
+    ListView listView ;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+	
+		
+		// Get ListView object from xml
+        listView = (ListView) findViewById(R.id.left_drawer);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, android.R.id.text1, MENU);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        		R.layout.menu_item, R.id.menu_item_id, MENU);
 
+        
+        listView.setAdapter(adapter); 
+        // ListView Item Click Listener
+        listView.setOnItemClickListener(new OnItemClickListener() {
+
+              @Override
+              public void onItemClick(AdapterView<?> parent, View view,
+                 int position, long id) {
+                
+               // ListView Clicked item index
+               int itemPosition     = position;
+               
+               // ListView Clicked item value
+               String  itemValue    = (String) listView.getItemAtPosition(position);
+                  
+                // Show Alert 
+                Toast.makeText(getApplicationContext(),
+                  "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
+                  .show();
+             
+              }
+
+         }); 
+		
 		if (!parseInit)
 		{
 			Log.d("MainActivity", "Initializing Parse");
@@ -57,7 +97,7 @@ public class MainActivity extends Activity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
+			View rootView = inflater.inflate(R.layout.main_fragment, container,
 					false);
 			return rootView;
 		}
