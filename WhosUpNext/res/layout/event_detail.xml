@@ -146,6 +146,36 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
     		android:orientation="horizontal"
+	        android:padding="5dp" >
+	        <TextView
+		        android:id="@+id/attending_label"
+		        android:text="@string/attending_label"
+		        style="@style/label" />
+			<TextView
+			    android:id="@+id/attending_value"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+		        android:layout_marginRight="@dimen/value_padding" />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+    		android:orientation="horizontal"
+	        android:padding="5dp"
+		    android:gravity="center" >
+		    <Button
+		        android:id="@+id/attend_button"
+		        android:text="@string/attend"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:onClick="attendEvent"
+		        android:background="@drawable/burnt_button"
+		        style="@style/button_text" />
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+    		android:orientation="horizontal"
 	        android:padding="5dp"
 		    android:gravity="center" >
 		    <Button

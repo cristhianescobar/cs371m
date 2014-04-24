@@ -1,10 +1,14 @@
 package com.whosupnext;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,38 +21,42 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class EventDetail extends Activity
 {
 	private static Event mEvent;
+	private static ParseUser mUser;
+	private static List<ParseObject> mGuests;
+	private static Context mContext;
+	private static ProgressDialog mDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_detail);
+
+		mContext = this;
 		
-		Intent intent = getIntent();
-		String objectId = intent.getStringExtra("id");
-		Log.d("EventDetail", "Details for event " + objectId);
+    	mUser = ParseUser.getCurrentUser();
 		
-		ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-		try
-		{
-			mEvent = query.get(objectId);
-			displayData();
-		}
-		catch (Exception e)
-		{
-			Log.e("EventDetail", "Getting Data: " + e.toString());
-			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-		}
+		// Start Dialog
+		mDialog = new ProgressDialog(mContext);
+		mDialog.setMessage("Loading data...");
+		mDialog.setIndeterminate(true);
+		mDialog.setCancelable(false);
+		mDialog.show();
+		
+		// Load Data in AsyncTask
+		new loadData().execute();
 	}
 	
 	private void displayData()
@@ -61,40 +69,66 @@ public class EventDetail extends Activity
 			
 			// Display Data
 			((TextView) findViewById(R.id.name_value)).setText(mEvent.getName());
-			((TextView) findViewById(R.id.host_value)).setText(host.fetchIfNeeded().getEmail());
-			((TextView) findViewById(R.id.phone_value)).setText(host.fetchIfNeeded().getNumber("phone").toString());
 			((TextView) findViewById(R.id.date_value)).setText(DateTimeParser.date(date));
 			((TextView) findViewById(R.id.time_value)).setText(DateTimeParser.time(date));
 			((TextView) findViewById(R.id.sport_value)).setText(mEvent.getSport());
-			((TextView) findViewById(R.id.details_value)).setText(mEvent.getDetails());
 			((TextView) findViewById(R.id.location_value)).setText(parseAddress(location));
+			((TextView) findViewById(R.id.details_value)).setText(mEvent.getDetails());
+			((TextView) findViewById(R.id.host_value)).setText(host.fetchIfNeeded().getString("name"));
+			((TextView) findViewById(R.id.phone_value)).setText(PhoneNumberUtils.formatNumber(host.fetchIfNeeded().getNumber("phone").toString()));
+			((TextView) findViewById(R.id.attending_value)).setText(getAttending());
 			
-
 			// Setup Map
 			GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.location_map)).getMap();
 			map.getUiSettings().setScrollGesturesEnabled(false);
 			map.addMarker(new MarkerOptions().position(location));
 	        map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
-			
-			// Choose whether or not 
-			Button delete = ((Button) findViewById(R.id.delete_button));
-			ParseUser current = ParseUser.getCurrentUser();
-			if ((current == null) || (!host.getEmail().equals(current.getEmail())))
+	        
+			// Choose which button(s) to show
+			Button attend = ((Button) findViewById(R.id.delete_button));
+			Button delete = ((Button) findViewById(R.id.attend_button));
+			if (mUser == null || mGuests.contains(mUser))
 			{
+				attend.setVisibility(View.GONE);
+				delete.setVisibility(View.GONE);
+			}
+			else if (mUser.getObjectId().equals(host.getObjectId()))
+			{
+				attend.setVisibility(View.VISIBLE);
 				delete.setVisibility(View.GONE);
 			}
 			else
 			{
+				attend.setVisibility(View.GONE);
 				delete.setVisibility(View.VISIBLE);
 			}
 		}
 		catch (Exception e)
 		{
 			Log.e("EventDetail", "Display Data: " + e.toString());
+			e.printStackTrace();
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 	
+	// Gets a list of the guests' names
+	private String getAttending()
+	{
+		if (mGuests.isEmpty())
+		{
+			return "None";
+		}
+		else
+		{
+			String o = "";
+			for (ParseObject user : mGuests)
+			{
+				o += user.getString("name") + "\n";
+			}
+			return o.substring(0, o.length() - 1);
+		}
+	}
+
 	// Gets string address from LatLng
 	private String parseAddress(LatLng location)
 	{
@@ -118,6 +152,31 @@ public class EventDetail extends Activity
 		}
 	}
 	
+	// Called by Attend Button
+	public void attendEvent(View v)
+	{
+		if ((mUser == null) || (mUser.equals(mEvent.getHost()) || mGuests.contains(mUser)))
+		{
+			Log.wtf("EventDetail", "attendEvent: User is host or null");
+			assert(false);
+		}
+		
+		ParseRelation<ParseUser> relation = mEvent.getRelation("guests");
+		relation.add(mUser);
+		
+		mEvent.saveInBackground();
+		
+		// Start Dialog
+		mDialog = new ProgressDialog(mContext);
+		mDialog.setMessage("Loading data...");
+		mDialog.setIndeterminate(true);
+		mDialog.setCancelable(false);
+		mDialog.show();
+		
+		// Load Data in AsyncTask
+		new loadData().execute();
+	}
+	
 	// Called by Delete Button
 	public void deleteEvent(View v)
 	{
@@ -125,4 +184,60 @@ public class EventDetail extends Activity
 		Toast.makeText(getApplicationContext(), "Event deleted.", Toast.LENGTH_SHORT).show();
 		finish();
 	}
+	
+	// Saves Event in AsyncTask
+	private class loadData extends AsyncTask<Void, Void, Void>
+    {
+		String msg = "";
+		@Override
+		protected Void doInBackground(Void... params)
+		{
+	        try
+	        {	        	
+	        	Intent intent = getIntent();
+	    		String objectId = intent.getStringExtra("id");
+	    		Log.d("EventDetail", "Details for event " + objectId);
+	    		
+	        	ParseQuery<Event> eventQuery = ParseQuery.getQuery(Event.class);
+	            eventQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+	    		mEvent = (Event) eventQuery.get(objectId);
+	    		
+	    		ParseQuery<ParseObject> guestQuery = mEvent.getRelation("guests").getQuery();
+	    		guestQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+	    		mGuests = guestQuery.find();
+			}
+	        catch (ParseException e)
+	        {
+	        	Log.e("SignIn", "SignIn: " + e.toString());
+	        	switch (e.getCode())
+	        	{
+	        		case 100:
+	        			msg = "Check network connection.";
+	        			break;
+	        		default:
+	        			msg = "An unknown problem has occured (" + e.getCode() + ").";
+	        			break;
+	        	}
+			}
+			return null;
+		}
+		
+		protected void onPostExecute (Void result)
+		{
+			if (mDialog != null)
+			{
+				mDialog.dismiss();
+			}
+			
+			if (msg.isEmpty())
+			{				
+				displayData();
+			}
+			else
+			{
+				Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+			}
+			
+		}
+    }
 }

@@ -8,12 +8,14 @@
     <string name="event_details">Event Details</string>
     <string name="add_event">Add Event</string>
     <string name="sign_out">Sign Out</string>
+    <string name="attend">Attend</string>
     <string name="delete">Delete</string>
     <string name="action_settings">Settings</string>
     <string name="submit">Submit</string>
     <string name="update_map">Update</string>
         
     <!-- Labels -->
+    <string name="attending_label"><b>Attending:</b></string>
     <string name="confirm_label"><b>Confirm:</b></string>
     <string name="date_label"><b>Date:</b></string>
     <string name="details_label"><b>Details:</b></string>

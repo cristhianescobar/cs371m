@@ -41,11 +41,11 @@ import java.util.Locale;
 @SuppressLint("ValidFragment")
 public class AddEvent extends Activity
 {
-	private ParseUser mUser;
-	private Event mEvent;
-	private LatLng mLocation;
-	private Context mContext;
-	private ProgressDialog mDialog;
+	private static ParseUser mUser;
+	private static Event mEvent;
+	private static LatLng mLocation;
+	private static Context mContext;
+	private static ProgressDialog mDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

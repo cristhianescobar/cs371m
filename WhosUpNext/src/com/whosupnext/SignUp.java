@@ -78,14 +78,14 @@ public class SignUp extends Activity
 				throw new IllegalArgumentException("Passwords must be at least 6 characters.");
 			
 			if (phone.length() != 10)
-				throw new NumberFormatException();
+				throw new NumberFormatException("Phone number must be 10 digets");
 			
 			mUser = new ParseUser();
     		mUser.setUsername(email);
     		mUser.setPassword(password);
     		mUser.setEmail(email);
     		mUser.put("name", name);
-    		mUser.put("phone", Integer.parseInt(phone));
+    		mUser.put("phone", Long.parseLong(phone));
 			
     		// Set Submit Button to unclickable
 			submit.setClickable(false);
